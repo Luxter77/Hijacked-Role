@@ -3,6 +3,7 @@
 from tqdm.asyncio import tqdm as asynctqdm
 from discord.ext import commands
 from tqdm.auto import tqdm
+import datetime as dt
 import traceback
 import discord
 import asyncio
@@ -12,14 +13,12 @@ import sys
 import os
 import re
 
+# Load
+CommandPrefix, TOKEN, PATH, RolVChan, DevLab, LogChan, LogAdmin, SUPERUSER, UserExLixt, ChanExList, GildExList = pickle.load(open('config.pkl', 'rb'))
 
 # init
-bot = commands.Bot(command_prefix='!role', case_insensitive=True)
+bot = commands.Bot(command_prefix=BotPrefix, case_insensitive=True)
 slash = "\\" if (os.name == 'nt') else "/" # Where the heck am I
-
-#debug info
-LogChan = 769403585262780416
-debugTrigger = False # It prints stuff
 
 ## All of this was carried over from Hijacked Node
 async def logMe(st, err_ = False, tq = True):
@@ -30,7 +29,7 @@ async def logMe(st, err_ = False, tq = True):
 		try:
 			for Chan in LogChan:
 				await bot.get_channel(Chan).send('|-----------------ERR_ START-------------------|')
-				await bot.get_channel(Chan).send("<@" + str(LogAdmin[0]) + ">:")
+				await bot.get_channel(Chan).send(' '.join([("<@" + str(admin[0]) + ">:") for admin in LogAdmin]))
 				await bot.get_channel(Chan).send(st)
 				await bot.get_channel(Chan).send('|------------------ERR_ END--------------------|')
 		except:
@@ -98,3 +97,5 @@ async def on_ready():
 		await logMe("|			Bootup Sequence complete			|")
 		await bot.change_presence(activity = discord.Game(name = 'Soulcasting'))
 	await logMe('|-------------- doBootUp End ---------------|')
+
+bot.start("")

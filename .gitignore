@@ -134,3 +134,4 @@ dmypy.json
 # SECRET
 *config.pkl
 *config.py
+DB/*
