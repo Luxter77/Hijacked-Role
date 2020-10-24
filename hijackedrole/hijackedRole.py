@@ -22,6 +22,7 @@ CommandPrefix, TOKEN, PATH, DB_PATH, DevLab, SUPERUSER, LogChan, LogAdmin, GildE
 # init
 bot = commands.Bot(command_prefix=CommandPrefix, case_insensitive=True)
 slash = "\\" if (os.name == 'nt') else "/" # Where the heck am I
+os.makedirs(DB_PATH, exist_ok=True)
 
 ## All of this was carried over from Hijacked Node
 async def logMe(st, err_ = False, tq = True):
