@@ -120,7 +120,7 @@ async def on_ready():
 
 @bot.command(pass_context=True)
 async def ttest(ctx: discord.ext.commands.Context):
-	ctx.send('test')
+	await ctx.send('test')
 
 @bot.group(pass_context=True)
 async def aeiou(ctx: discord.ext.commands.Context):
@@ -129,7 +129,7 @@ async def aeiou(ctx: discord.ext.commands.Context):
 
 @aeiou.command(pass_context=True)
 async def test(ctx: discord.ext.commands.Context):
-	ctx.send("test")
+	await ctx.send("test")
 
 ### DRAGONS END HERE;
 ### Tarasques ahead
