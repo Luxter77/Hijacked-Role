@@ -13,11 +13,12 @@ import sys
 import os
 import re
 
+print(os.getcwd())
 # Load
-CommandPrefix, TOKEN, PATH, RolVChan, DevLab, LogChan, LogAdmin, SUPERUSER, UserExLixt, ChanExList, GildExList = pickle.load(open('config.pkl', 'rb'))
+CommandPrefix, TOKEN, PATH, DB_PATH, DevLab, SUPERUSER, LogChan, LogAdmin, GildExList, ChanExList, UserExLixt, RolVChan = pickle.load(open('Config.pkl', 'rb'))
 
 # init
-bot = commands.Bot(command_prefix=BotPrefix, case_insensitive=True)
+bot = commands.Bot(command_prefix=CommandPrefix, case_insensitive=True)
 slash = "\\" if (os.name == 'nt') else "/" # Where the heck am I
 
 ## All of this was carried over from Hijacked Node
@@ -87,7 +88,7 @@ async def on_ready():
 	#await logMe('|            Testing Testing 1 2 3             |') #TODO: Think of a cool phrase to replace this one
 	await logMe('|----------------------------------------------|')
 	await bot.change_presence(activity = discord.Game(name = 'Waking Up...'))
-	async with bot.get_channel(LogChan).typing():
+	async with bot.get_channel(LogChan[0]).typing():
 		await logMe( "[ " + str(dt.datetime.now().timestamp()) + " ]" )
 		await logMe( str(bot.user) + " Is connected to:")
 		await logMe('|----------------------------------------------|')
@@ -96,6 +97,6 @@ async def on_ready():
 		await logMe('|----------------------------------------------|')
 		await logMe("|			Bootup Sequence complete			|")
 		await bot.change_presence(activity = discord.Game(name = 'Soulcasting'))
-	await logMe('|-------------- doBootUp End ---------------|')
+	await logMe('|----------------doBootUp End------------------|')
 
-bot.start("")
+bot.run(TOKEN)

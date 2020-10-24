@@ -132,6 +132,5 @@ dmypy.json
 .vscode/
 
 # SECRET
-*config.pkl
-*config.py
+*onfig.p*
 DB/*
