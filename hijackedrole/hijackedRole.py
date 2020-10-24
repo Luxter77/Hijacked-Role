@@ -9,11 +9,10 @@ import traceback, discord
 import asyncio, pickle
 import glob, sys, os, re
 
-from hijackedrole import characters
-from hijackedrole import gclasses
-from hijackedrole import dgamer
-from hijackedrole import config
-from hijackedrole import misc
+import config
+
+from misc import *
+
 
 print(os.getcwd())
 # Load
@@ -74,6 +73,20 @@ async def logMe(st, err_ = False, tq = True):
 				await logMe("Ah for fucks sake something went horribly grong!", True)
 				await bot.get_channel(Chan).send('|------------------Log_ END--------------------|')
 
+@bot.event
+async def on_command_error(context, exception):
+    print('|--------------- ERR_ START ----------------|')
+    print('Ignoring exception in command {}:'.format(context.command), file=sys.stderr)
+    traceback.print_exception(type(exception), exception, exception.__traceback__, file=sys.stderr)
+    print('|---------------- ERR_ END -----------------|')
+    try:
+        await logMe(context.message.content)
+    except:
+        None
+    try: 
+        await logMe(exception, True)
+    except:
+        None
 
 @bot.event
 async def on_error(event_method, *args, **kwargs):
@@ -85,6 +98,7 @@ async def on_error(event_method, *args, **kwargs):
 		print(' Ignoring exception in {}'.format(event_method), file=sys.stderr)
 		traceback.print_exc()
 		print('|------------------ ERR_ END ------------------|')
+
 @bot.event
 async def on_ready():
 	await logMe('|-----------------doBootUp-st------------------|')
@@ -98,15 +112,24 @@ async def on_ready():
 		for guild in bot.guilds:
 			await logMe(" - [" + str(guild.id) + "]: " + str(guild.name) + ".")
 		await logMe('|----------------------------------------------|')
-		await logMe("|			Bootup Sequence complete			|")
+		await logMe("|           Bootup Sequence complete           |")
 		await bot.change_presence(activity = discord.Game(name = 'Soulcasting'))
 	await logMe('|----------------doBootUp End------------------|')
 
 ### HERE BE DRAGONS;
 
+@bot.command(pass_context=True)
+async def ttest(ctx: discord.ext.commands.Context):
+	ctx.send('test')
+
 @bot.group(pass_context=True)
-async def aeiou():
-	print('nothing')
+async def aeiou(ctx: discord.ext.commands.Context):
+	if ctx.invoked_subcommand is None:
+		await ctx.send('Invalid sub command')
+
+@aeiou.command(pass_context=True)
+async def test(ctx: discord.ext.commands.Context):
+	ctx.send("test")
 
 ### DRAGONS END HERE;
 ### Tarasques ahead
