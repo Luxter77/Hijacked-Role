@@ -4,6 +4,7 @@
 from tqdm.asyncio import tqdm as asynctqdm
 from discord.ext import commands
 from tqdm.auto import tqdm
+import traceback
 import discord
 import asyncio
 import pickle
@@ -76,15 +77,6 @@ async def on_error(event_method, *args, **kwargs):
 		print(' Ignoring exception in {}'.format(event_method), file=sys.stderr)
 		traceback.print_exc()
 		print('|----------------- ERR_ END -----------------|')
-
-# Not going to be used... yet
-#@bot.event
-#async def on_message(message):
-#	await EMT(message)
-#	if(message.author != bot.user):
-#		await bot.process_commands(message)
-#		cont = message.content.lower()
-#		await talk(message, True) if ( not(cont.startswith("--")) and not(cont.startswith("/")) and not(cont.startswith("!")) and not(cont.startswith("$")) and bool(re.search("node", cont))) else None
 
 @bot.event
 async def on_ready():
