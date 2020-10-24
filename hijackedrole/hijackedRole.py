@@ -88,7 +88,7 @@ async def on_error(event_method, *args, **kwargs):
 @bot.event
 async def on_ready():
 	await logMe('|-----------------doBootUp-st------------------|')
-	#await logMe('|            Testing Testing 1 2 3             |') #TODO: Think of a cool phrase to replace this one
+	await logMe('|           Testing Testing 1, 2, 3            |') #TODO: Think of a cool phrase to replace this one
 	await logMe('|----------------------------------------------|')
 	await bot.change_presence(activity = discord.Game(name = 'Waking Up...'))
 	async with bot.get_channel(LogChan[0]).typing():
@@ -102,7 +102,7 @@ async def on_ready():
 		await bot.change_presence(activity = discord.Game(name = 'Soulcasting'))
 	await logMe('|----------------doBootUp End------------------|')
 
-### HERE BE DRAGONS
+### HERE BE DRAGONS;
 
 @bot.group(pass_context=True)
 async def aeiou():
@@ -110,5 +110,4 @@ async def aeiou():
 
 ### DRAGONS END HERE;
 ### Tarasques ahead
-
 bot.run(TOKEN)
