@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 # coding: utf-8
+from django.db import models
 import discord
 import random
 
-class game_class():
+class game_class(models.Model):
 	"TODO: Make it so there are other classes"
 	"for now, just DnD classes"
-	def __init__(self, name: str, dice: list, clvl: int = 1, rng: bool = True):
+	@classmethod
+	def create(self, name: str, dice: list, clvl: int = 1, rng: bool = True):
 		self.dice			= dice
 		self.name			= name
 		self.clvl			= clvl
@@ -17,76 +19,88 @@ class game_class():
 class BARBARIAN(game_class):
 	name 		= 'barbarian'
 	dice		= [[1, 12], [7, 1]]
-	def __init__(self, rng: bool = True):
-		super().__init__(name = self.name, dice = self.dice, rng = rng)
+	@classmethod
+	def create(self, rng: bool = True):
+		super().create(name = self.name, dice = self.dice, rng = rng)
 
 class BARD(game_class):
 	name		= 'bard'
 	dice		= [[1, 8], [5, 1]]
-	def __init__(self, rng: bool = True):
-		super().__init__(name = self.name, dice = self.dice, rng = rng)
+	@classmethod
+	def create(self, rng: bool = True):
+		super().create(name = self.name, dice = self.dice, rng = rng)
 
 class CLERIC(game_class):
 	name 		= 'cleric'
 	dice		= [[1, 8], [5, 1]]
-	def __init__(self, rng: bool = True):
-		super().__init__(name = self.name, dice = self.dice, rng = rng)
+	@classmethod
+	def create(self, rng: bool = True):
+		super().create(name = self.name, dice = self.dice, rng = rng)
 
 class DRUID(game_class):
 	name		= 'druid'
 	dice		= [[1, 8], [5, 1]]
-	def __init__(self, rng: bool = True):
-		super().__init__(name = self.name, dice = self.dice, rng = rng)
+	@classmethod
+	def create(self, rng: bool = True):
+		super().create(name = self.name, dice = self.dice, rng = rng)
 
 class FIGHTER(game_class):
 	name		= 'fighter'
 	dice		= [[1, 10], [6, 1]]
-	def __init__(self, rng: bool = True):
-		super().__init__(name = self.name, dice = self.dice, rng = rng)
+	@classmethod
+	def create(self, rng: bool = True):
+		super().create(name = self.name, dice = self.dice, rng = rng)
 
 class MONK(game_class):
 	name		= 'monk'
 	dice		= [[1, 8], [5, 1]]
-	def __init__(self, rng: bool = True):
-		super().__init__(name = self.name, dice = self.dice, rng = rng)
+	@classmethod
+	def create(self, rng: bool = True):
+		super().create(name = self.name, dice = self.dice, rng = rng)
 
 class PALADIN(game_class):
 	name		= 'paladin'
 	dice		= [[1, 10], [6, 1]]
-	def __init__(self, rng: bool = True):
-		super().__init__(name = self.name, dice = self.dice, rng = rng)
+	@classmethod
+	def create(self, rng: bool = True):
+		super().create(name = self.name, dice = self.dice, rng = rng)
 
 class RANGER(game_class):
 	name		= 'ranger'
 	dice		= [[1, 10], [6, 1]]
-	def __init__(self, rng: bool = True):
-		super().__init__(name = self.name, dice = self.dice, rng = rng)
+	@classmethod
+	def create(self, rng: bool = True):
+		super().create(name = self.name, dice = self.dice, rng = rng)
 
 class ROGUE(game_class):
 	name		= 'rogue'
 	dice		= [[1, 8], [5, 1]]
-	def __init__(self, rng: bool = True):
-		super().__init__(name = self.name, dice = self.dice, rng = rng)
+	@classmethod
+	def create(self, rng: bool = True):
+		super().create(name = self.name, dice = self.dice, rng = rng)
 
 class SORCERER(game_class):
 	name		= 'sorcerer'
 	dice		= [[1, 6], [4, 1]]
-	def __init__(self, rng: bool = True):
-		super().__init__(name = self.name, dice = self.dice, rng = rng)
+	@classmethod
+	def create(self, rng: bool = True):
+		super().create(name = self.name, dice = self.dice, rng = rng)
 
 class WARLOCK(game_class):
 	name		= 'warlock'
 	dice		= [[1, 8], [5, 1]]
-	def __init__(self, rng: bool = True):
-		super().__init__(name = self.name, dice = self.dice, rng = rng)
+	@classmethod
+	def create(self, rng: bool = True):
+		super().create(name = self.name, dice = self.dice, rng = rng)
 
 class WIZARD(game_class):
 	name		= 'wizard' 
 	dice		= [[1, 6], [4, 1]]
-	def __init__(self, rng: bool = True):
-		super().__init__(name = self.name, dice = self.dice, rng = rng)
+	@classmethod
+	def create(self, rng: bool = True):
+		super().create(name = self.name, dice = self.dice, rng = rng)
 
-class char_stats:
+class char_stats(models.Model):
 	'''
 	strength		(strg): How much you strong,\n
 	inteligence 	(inte): How much you think,\n
@@ -98,7 +112,8 @@ class char_stats:
 	luck 			(luck): How well you,\n
 	seed			(seed): How.
 	'''
-	def __init__(self, strg: int = 10, inte: int = 10, sped: int = 10, dext: int = 10, wisd: int = 10, conn: int = 10, char: int = 10, luck: int = 50, levl: int = 1, seed: int = None):
+	@classmethod
+	def create(self, strg: int = 10, inte: int = 10, sped: int = 10, dext: int = 10, wisd: int = 10, conn: int = 10, char: int = 10, luck: int = 50, levl: int = 1, seed: int = None):
 		self.strg = strg
 		self.inte = inte
 		self.sped = sped
@@ -124,15 +139,17 @@ class char_stats:
 			'\n   magic number: '	+ str(self.seed)
 		)
 
-class char_state:
+class char_state(models.Model):
 	'TODO: *'
-	def __init__(self, MaxHP: int = 5):
+	@classmethod
+	def create(self, MaxHP: int = 5):
 		self.MaxHP	= MaxHP
 		self.HP		= MaxHP
 
-class game_object:
+class game_object(models.Model):
 	'''A thing that a character can have or equip or use'''
-	def __init__(self, name: str,  stats: char_stats, description: str = "What title says", equipable: bool = False, isequiped: bool = False, usable: bool = False, isAmmo: bool = False, ammount: int = 1):
+	@classmethod
+	def create(self, name: str,  stats: char_stats, description: str = "What title says", equipable: bool = False, isequiped: bool = False, usable: bool = False, isAmmo: bool = False, ammount: int = 1):
 		self.name			= name
 		self.stats			= stats
 		self.description	= description
@@ -144,9 +161,10 @@ class game_object:
 	def __str__(self):
 		return( '<' + self.name + '>\n[ ' + str(self.description) + ' ]\n' + 'Stats:\n' + str(self.stats) + '\n' + (('This object is equipable.\n') if(self.equipable) else '') + (('This object is usable.\n') if(self.usable) else '') + (('This object is ammo.\n') if(self.equipable) else '') )
 
-class character:
+class character(models.Model):
 	"""Playable character, OC, if you will"""
-	def __init__(self, name: str, alighn: list = [], stats: char_stats = None, gaem_class: game_class = None):
+	@classmethod
+	def create(self, name: str, alighn: list = [], stats: char_stats = None, gaem_class: game_class = None):
 		self.name		= name
 		self.alighn		= alighn
 		self.stats		= stats
@@ -165,9 +183,10 @@ class character:
 		if(true):
 			self.state.HP -= dmg_int
 
-class gamer:
+class gamer(models.Model):
 	'''Thing that plays and happens to be a discord user'''
-	def __init__(self, user: discord.User, chars: dict = {}, rollingAs: character = None, isRolling: bool = False, isGM: bool = False):
+	@classmethod
+	def create(self, user: discord.User, chars: dict = {}, rollingAs: character = None, isRolling: bool = False, isGM: bool = False):
 		self.user		= user          # Discord user, holds _a lot_ of data
 
 		self.chars      = chars         # dict of characters by id (TODO: what is an id?)
@@ -184,9 +203,10 @@ class gamer:
 			(('This player is rolling as: ' + self.rollingAs + '\n') if (self.isRolling and bool(self.chars)) else '')
 		)
 
-class campaing:
+class campaing(models.Model):
 	'''A place where the game concurs, the state is kept'''
-	def __init__(self, name: str, GM_: gamer, description: str = "What title says", notes: list = [], gamers: list = [], characters: list = []):
+	@classmethod
+	def create(self, name: str, GM_: gamer, description: str = "What title says", notes: list = [], gamers: list = [], characters: list = []):
 		self.name			= name
 		self.description	= description
 		self.notes			= notes

@@ -9,19 +9,13 @@ import traceback, discord
 import asyncio, pickle
 import glob, sys, os, re
 
-import config
-
-from misc import *
-
-
-print(os.getcwd())
-# Load
-CommandPrefix, TOKEN, PATH, DB_PATH, DevLab, SUPERUSER, LogChan, LogAdmin, GildExList, ChanExList, UserExLixt, RolVChan = pickle.load(open('Config.pkl', 'rb'))
+from hijackedrole import config
+from hijackedrole.mis_ import *
 
 # init
-bot = commands.Bot(command_prefix=CommandPrefix, case_insensitive=True)
+bot = commands.Bot(command_prefix=config.CommandPrefix, case_insensitive=True)
 slash = "\\" if (os.name == 'nt') else "/" # Where the heck am I
-os.makedirs(DB_PATH, exist_ok=True)
+os.makedirs(config.DB_PATH, exist_ok=True)
 
 ## All of this was carried over from Hijacked Node
 async def logMe(st, err_ = False, tq = True):
@@ -30,20 +24,20 @@ async def logMe(st, err_ = False, tq = True):
 		print(_stderr) if(tq) else tqdm.write(_stderr)
 		print(st) if(tq) else tqdm.write(st)
 		try:
-			for Chan in LogChan:
+			for Chan in config.LogChan:
 				await bot.get_channel(Chan).send('|-----------------ERR_ START-------------------|')
-				await bot.get_channel(Chan).send(' '.join([("<@" + str(admin[0]) + ">:") for admin in LogAdmin]))
+				await bot.get_channel(Chan).send(' '.join([("<@" + str(admin) + ">:") for admin in config.LogAdmin]))
 				await bot.get_channel(Chan).send(st)
 				await bot.get_channel(Chan).send('|------------------ERR_ END--------------------|')
 		except:
 			try:
-				for Chan in LogChan:
+				for Chan in config.LogChan:
 					await bot.get_channel(Chan).send('|--------------- ERR_ START ----------------|')
 					try:
-						await bot.get_channel(Chan).send("<@" + str(LogAdmin[0]) + ">:")
+						await bot.get_channel(Chan).send("<@" + str(config.LogAdmin[0]) + ">:")
 						await bot.get_channel(Chan).send(str(st))
 					except:
-						await bot.get_channel(Chan).send("<@" + str(LogAdmin[0]) + ">:")
+						await bot.get_channel(Chan).send("<@" + str(config.LogAdmin[0]) + ">:")
 						await bot.get_channel(Chan).send("Some unprinteable error happened... ")
 					await bot.get_channel(Chan).send('|------------------ERR_ END--------------------|')
 			except:
@@ -55,12 +49,12 @@ async def logMe(st, err_ = False, tq = True):
 		_stdout = st
 		print(_stdout) if(tq) else tqdm.write(_stdout)
 		try:
-			for Chan in LogChan:
+			for Chan in config.LogChan:
 				await bot.get_channel(Chan).send(st)
 
 		except:
 			try:
-				for Chan in LogChan:
+				for Chan in config.LogChan:
 					try:
 						try:
 							await bot.get_channel(Chan).send(st)
@@ -105,7 +99,7 @@ async def on_ready():
 	await logMe('|           Testing Testing 1, 2, 3            |') #TODO: Think of a cool phrase to replace this one
 	await logMe('|----------------------------------------------|')
 	await bot.change_presence(activity = discord.Game(name = 'Waking Up...'))
-	async with bot.get_channel(LogChan[0]).typing():
+	async with bot.get_channel(config.LogChan[0]).typing():
 		await logMe( "[ " + str(dt.datetime.now().timestamp()) + " ]" )
 		await logMe( str(bot.user) + " Is connected to:")
 		await logMe('|----------------------------------------------|')
@@ -113,24 +107,28 @@ async def on_ready():
 			await logMe(" - [" + str(guild.id) + "]: " + str(guild.name) + ".")
 		await logMe('|----------------------------------------------|')
 		await logMe("|           Bootup Sequence complete           |")
+		#await genDB(config.DB_PATH)
+		#await CONN_V([], init = True)
 		await bot.change_presence(activity = discord.Game(name = 'Soulcasting'))
 	await logMe('|----------------doBootUp End------------------|')
 
 ### HERE BE DRAGONS;
+#@bot.command(pass_context=True, brief='', description='')
 
-@bot.command(pass_context=True)
-async def ttest(ctx: discord.ext.commands.Context):
-	await ctx.send('test')
-
-@bot.group(pass_context=True)
-async def aeiou(ctx: discord.ext.commands.Context):
+@bot.group(pass_context=True, brief='Role System Command', description='Controls everything related roleplay mechanincs and meta')
+async def role(ctx: discord.ext.commands.Context):
 	if ctx.invoked_subcommand is None:
-		await ctx.send('Invalid sub command')
+		await ctx.send('')
 
-@aeiou.command(pass_context=True)
-async def test(ctx: discord.ext.commands.Context):
-	await ctx.send("test")
+@role.group(pass_context=True, brief='Creates a new instance', description='Creates a new instance of the given object')
+async def new(ctx: discord.ext.commands.Context):
+	await ctx.send('aeiouaeiouaeiou')
+
+@new.group(pass_context=True)
+async def character(ctx: discord.ext.commands.Context):
+	if(ctx.author in PLAYER_DB.get_players()):
+		await ctx.send('')
 
 ### DRAGONS END HERE;
 ### Tarasques ahead
-bot.run(TOKEN)
+bot.run(config.TOKEN)
