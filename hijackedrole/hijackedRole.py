@@ -3,15 +3,17 @@
 from tqdm.asyncio import tqdm as asynctqdm
 from discord.ext import commands
 from tqdm.auto import tqdm
+
 import datetime as dt
-import traceback
-import discord
-import asyncio
-import pickle
-import glob
-import sys
-import os
-import re
+import traceback, discord
+import asyncio, pickle
+import glob, sys, os, re
+
+from hijackedrole import characters
+from hijackedrole import gclasses
+from hijackedrole import dgamer
+from hijackedrole import config
+from hijackedrole import misc
 
 print(os.getcwd())
 # Load
@@ -98,5 +100,13 @@ async def on_ready():
 		await logMe("|			Bootup Sequence complete			|")
 		await bot.change_presence(activity = discord.Game(name = 'Soulcasting'))
 	await logMe('|----------------doBootUp End------------------|')
+
+### HERE BE DRAGONS
+
+@bot.group(pass_context=True)
+
+
+### DRAGONS END HERE;
+### Tarasques ahead
 
 bot.run(TOKEN)
