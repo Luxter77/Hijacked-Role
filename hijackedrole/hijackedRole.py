@@ -104,7 +104,8 @@ async def on_ready():
 ### HERE BE DRAGONS
 
 @bot.group(pass_context=True)
-
+async def aeiou():
+	print('nothing')
 
 ### DRAGONS END HERE;
 ### Tarasques ahead
