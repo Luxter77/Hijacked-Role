@@ -29,5 +29,5 @@ def saveConfig():																				# Save the configuration to a file for pers
 	)																							#
 																								#
 # Why do I keep doing this to myself															#
-if __main__ == __name__:																		#
+if __name__ == '__main__':																		#
 	saveConfig()																				#

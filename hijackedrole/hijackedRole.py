@@ -16,8 +16,10 @@ except:
 		class CONF0():
 			def __init__(self, conf):
 				self.CommandPrefix, self.TOKEN, self.PATH, self.DB_PATH, self.DevLab, self.SUPERUSER, self.LogChan, self.LogAdmin, self.GildExList, self.ChanExList, self.UserExLixt, self.RolVChan = conf
-			config = CONF0(tuple(pickle.load(open("Config.pkl", "wb"))))	
-	except:
+		config = CONF0(tuple(pickle.load(open("config.pkl", "rb"))))	
+	except Exception as err_:
+		print(err_)
+		traceback.print_exc()
 		print("I can't find configurations, now exiting")
 		sys.exit(1)
 
@@ -112,7 +114,7 @@ async def on_message(message):
 		await talk(message, True) if ( not(cont.startswith("--")) and not(cont.startswith("/")) and not(cont.startswith("!")) and not(cont.startswith("$")) and bool(re.search("node", cont))) else None
 
 async def doBootUp(): #spagget
-	def sec():
+	async def sec():
 		await logMe( "[ " + str(dt.datetime.now().timestamp()) + " ]" )
 		await logMe( str(bot.user) + " Is connected to:")
 		await logMe('|----------------------------------------------|')
