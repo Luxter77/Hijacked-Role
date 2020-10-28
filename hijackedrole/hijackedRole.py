@@ -14,7 +14,6 @@ from hijackedrole.mis_ import *
 
 # init
 bot = commands.Bot(command_prefix=config.CommandPrefix, case_insensitive=True)
-slash = "\\" if (os.name == 'nt') else "/" # Where the heck am I
 os.makedirs(config.DB_PATH, exist_ok=True)
 
 ## All of this was carried over from Hijacked Node
