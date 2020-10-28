@@ -14,9 +14,9 @@ try:
 except:
 	try:
 		class CONF0():
-			def __init__(self, CommandPrefix, TOKEN, PATH, DB_PATH, DevLab, SUPERUSER, LogChan, LogAdmin, GildExList, ChanExList, UserExLixt, RolVChan):
-				self.CommandPrefix, self.TOKEN, self.PATH, self.DB_PATH, self.DevLab, self.SUPERUSER, self.LogChan, self.LogAdmin, self.GildExList, self.ChanExList, self.UserExLixt, self.RolVChan = CommandPrefix, TOKEN, PATH, DB_PATH, DevLab, SUPERUSER, LogChan, LogAdmin, GildExList, ChanExList, UserExLixt, RolVChan
-		config = CONF0(pickle.load(open("Config.pkl", "wb")))	
+			def __init__(self, conf):
+				self.CommandPrefix, self.TOKEN, self.PATH, self.DB_PATH, self.DevLab, self.SUPERUSER, self.LogChan, self.LogAdmin, self.GildExList, self.ChanExList, self.UserExLixt, self.RolVChan = conf
+			config = CONF0(tuple(pickle.load(open("Config.pkl", "wb"))))	
 	except:
 		print("I can't find configurations, now exiting")
 
@@ -103,12 +103,15 @@ async def on_error(event_method, *args, **kwargs):
 		print('|------------------ ERR_ END ------------------|')
 
 @bot.event
-async def on_ready():
-	await logMe('|-----------------doBootUp-st------------------|')
-	await logMe('|           Testing Testing 1, 2, 3            |') #TODO: Think of a cool phrase to replace this one
-	await logMe('|----------------------------------------------|')
-	await bot.change_presence(activity = discord.Game(name = 'Waking Up...'))
-	async with bot.get_channel(config.LogChan[0]).typing():
+async def on_message(message):
+	await EMT(message)
+	if(message.author != bot.user):
+		await bot.process_commands(message)
+		cont = message.content.lower()
+		await talk(message, True) if ( not(cont.startswith("--")) and not(cont.startswith("/")) and not(cont.startswith("!")) and not(cont.startswith("$")) and bool(re.search("node", cont))) else None
+
+async def doBootUp(): #spagget
+	def sec():
 		await logMe( "[ " + str(dt.datetime.now().timestamp()) + " ]" )
 		await logMe( str(bot.user) + " Is connected to:")
 		await logMe('|----------------------------------------------|')
@@ -119,7 +122,20 @@ async def on_ready():
 		#await genDB(config.DB_PATH)
 		#await CONN_V([], init = True)
 		await bot.change_presence(activity = discord.Game(name = 'Soulcasting'))
+	await logMe('|-----------------doBootUp-st------------------|')
+	await logMe('|           Testing Testing 1, 2, 3            |') #TODO: Think of a cool phrase to replace this one
+	await logMe('|----------------------------------------------|')
+	await bot.change_presence(activity = discord.Game(name = 'Waking Up...'))
+	if(LogChan):
+		async with bot.get_channel(LogChan[0]).typing():
+			await sec()
+	else:
+		await sec()
 	await logMe('|----------------doBootUp End------------------|')
+
+@bot.event
+async def on_ready():
+	await doBootUp()
 
 ### HERE BE DRAGONS;
 #@bot.command(pass_context=True, brief='', description='')
