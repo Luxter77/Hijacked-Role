@@ -133,4 +133,5 @@ dmypy.json
 
 # SECRET
 *onfig.p*
+!./template.configuration.py
 DB/*

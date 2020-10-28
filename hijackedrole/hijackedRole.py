@@ -9,7 +9,17 @@ import traceback, discord
 import asyncio, pickle
 import glob, sys, os, re
 
-from hijackedrole import config
+try:
+	from hijackedrole import config
+except:
+	try:
+		class CONF0():
+			def __init__(self, CommandPrefix, TOKEN, PATH, DB_PATH, DevLab, SUPERUSER, LogChan, LogAdmin, GildExList, ChanExList, UserExLixt, RolVChan):
+				self.CommandPrefix, self.TOKEN, self.PATH, self.DB_PATH, self.DevLab, self.SUPERUSER, self.LogChan, self.LogAdmin, self.GildExList, self.ChanExList, self.UserExLixt, self.RolVChan = CommandPrefix, TOKEN, PATH, DB_PATH, DevLab, SUPERUSER, LogChan, LogAdmin, GildExList, ChanExList, UserExLixt, RolVChan
+		config = CONF0(pickle.load(open("Config.pkl", "wb")))	
+	except:
+		print("I can't find configurations, now exiting")
+
 from hijackedrole import mis_
 
 # init
