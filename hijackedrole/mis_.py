@@ -5,6 +5,7 @@ import discord
 import random
 
 class game_class(models.Model):
+	"TODO: change classes to somethign more original"
 	"TODO: Make it so there are other classes"
 	"for now, just DnD classes"
 	@classmethod

@@ -10,7 +10,7 @@ import asyncio, pickle
 import glob, sys, os, re
 
 from hijackedrole import config
-from hijackedrole.mis_ import *
+from hijackedrole import mis_
 
 # init
 bot = commands.Bot(command_prefix=config.CommandPrefix, case_insensitive=True)
