@@ -19,6 +19,7 @@ except:
 			config = CONF0(tuple(pickle.load(open("Config.pkl", "wb"))))	
 	except:
 		print("I can't find configurations, now exiting")
+		sys.exit(1)
 
 from hijackedrole import mis_
 
