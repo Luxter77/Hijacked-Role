@@ -146,16 +146,19 @@ async def on_ready():
 @bot.group(pass_context=True, brief='Role System Command', description='Controls everything related roleplay mechanincs and meta')
 async def role(ctx: discord.ext.commands.Context):
 	if ctx.invoked_subcommand is None:
-		await ctx.send('')
+		await ctx.send('No valid subcommand was provied')
 
 @role.group(pass_context=True, brief='Creates a new instance', description='Creates a new instance of the given object')
 async def new(ctx: discord.ext.commands.Context):
-	await ctx.send('aeiouaeiouaeiou')
+	if ctx.invoked_subcommand is None:
+		await ctx.send('No valid subpcommand was provided')
 
 @new.group(pass_context=True)
 async def character(ctx: discord.ext.commands.Context):
 	if(ctx.author in PLAYER_DB.get_players()):
 		await ctx.send('')
+	else:
+		PLAYER_DB.add_player(ctx.author)
 
 ### DRAGONS END HERE;
 ### Tarasques ahead
