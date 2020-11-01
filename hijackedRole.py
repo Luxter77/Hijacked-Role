@@ -19,12 +19,12 @@ import random
 class CONF0():
 	# IIII'm gonna swwwiiii from a chandelieeeeeeer
 	def __init__(self, CommandPrefix, TOKEN, DB_PATH, debug):
-		self.CommandPrefix = CommandPrefix
-		self.DB_PATH = DB_PATH
-		self.TOKEN = TOKEN
-		self.debug = debug
-		self.LogChan = set()
-		self.LogAdmin = set()
+		self.CommandPrefix	=	CommandPrefix
+		self.DB_PATH		=	DB_PATH
+		self.TOKEN			=	TOKEN
+		self.debug			=	debug
+		self.LogChan		=	set()
+		self.LogAdmin		=	set()
 	def add_LogChan(self, Chan: discord.channel):
 		self.LogChan.add(Chan)
 	def del_LogChan(self, Chan: discord.channel):
@@ -311,37 +311,21 @@ async def logMe(st, err_=False, tq=True):
 		print(st) if (tq) else tqdm.write(st)
 		try:
 			for Chan in config.LogChan:
-				await bot.get_channel(Chan).send(
-					'|-----------------ERR_ START-------------------|')
-				if (config.LogAdmin):
-					await bot.get_channel(Chan).send(' '.join([
-						("<@" + str(admin) + ">:") for admin in config.LogAdmin
-					]))
-				await bot.get_channel(Chan).send(st)
-				await bot.get_channel(Chan).send(
-					'|------------------ERR_ END--------------------|')
+				await Chan.send('|-----------------ERR_ START-------------------|')
+				if (config.LogAdmin): await Chan.send(' '.join([str(admin.mention) for admin in config.LogAdmin]))
+				await Chan.send(st)
+				await Chan.send('|------------------ERR_ END--------------------|')
 		except:
 			try:
 				for Chan in config.LogChan:
-					await bot.get_channel(Chan).send(
-						'|--------------- ERR_ START ----------------|')
+					await Chan.send('|--------------- ERR_ START ----------------|')
 					try:
-						if (config.LogAdmin):
-							await bot.get_channel(Chan).send(' '.join([
-								("<@" + str(admin) + ">:")
-								for admin in config.LogAdmin
-							]))
-						await bot.get_channel(Chan).send(str(st))
+						if (config.LogAdmin): await Chan.send(' '.join([ str(admin.mention) for admin in config.LogAdmin ]))
+						await Chan.send(str(st))
 					except:
-						if (config.LogAdmin):
-							await bot.get_channel(Chan).send(' '.join([
-								("<@" + str(admin) + ">:")
-								for admin in config.LogAdmin
-							]))
-						await bot.get_channel(Chan).send(
-							"Some unprinteable error happened... ")
-					await bot.get_channel(Chan).send(
-						'|------------------ERR_ END--------------------|')
+						if (config.LogAdmin): await Chan.send(' '.join([str(admin.mention)for admin in config.LogAdmin ]))
+						await Chan.send("Some unprinteable error happened... ")
+					await Chan.send('|------------------ERR_ END--------------------|')
 			except:
 				_stderr = "Ah for hugs sake something went horribly grong! AGAIN"
 				print(_stderr) if (tq) else tqdm.write(_stderr)
@@ -352,26 +336,22 @@ async def logMe(st, err_=False, tq=True):
 		print(_stdout) if (tq) else tqdm.write(_stdout)
 		try:
 			for Chan in config.LogChan:
-				await bot.get_channel(Chan).send(st)
-
+				await Chan.send(st)
 		except:
 			try:
 				for Chan in config.LogChan:
 					try:
 						try:
-							await bot.get_channel(Chan).send(st)
+							await Chan.send(st)
 						except:
-							await bot.get_channel(Chan).send(str(st))
+							await Chan.send(str(type(st)))
+							await Chan.send(str(st))
 					except:
-						await bot.get_channel(Chan).send(
-							"Some unprinteable error happened... ")
+						await Chan.send("Some unprinteable error happened... ")
 			except:
-				await bot.get_channel(Chan).send(
-					'|------------------Log_ START------------------|')
-				await logMe("Ah for fucks sake something went horribly grong!",
-							True)
-				await bot.get_channel(Chan).send(
-					'|------------------Log_ END--------------------|')
+				await Chan.send('|------------------Log_ START------------------|')
+				await logMe("Ah for fucks sake something went horribly grong!", True)
+				await Chan.send('|------------------Log_ END--------------------|')
 
 @bot.event
 async def on_command_error(context, exception):
@@ -399,8 +379,7 @@ async def on_error(event_method, *args, **kwargs):
 		await logMe(" ``` " + traceback.format_exc() + " ``` ", True)
 	except:
 		print('|------------------ERR_ START------------------|')
-		print(' Ignoring exception in {}'.format(event_method),
-			  file=sys.stderr)
+		print(' Ignoring exception in {}'.format(event_method), file=sys.stderr)
 		traceback.print_exc()
 		print('|------------------ ERR_ END ------------------|')
 
@@ -436,17 +415,12 @@ async def on_ready():
 # HERE BE DRAGONS;
 # @bot.command(pass_context=True, brief='', description='')
 
-@bot.group(
-	pass_context=True,
-	brief='Role System Command',
-	description='Controls everything related roleplay mechanincs and meta')
+@bot.group(pass_context=True, brief='Role System Command', description='Controls everything related roleplay mechanincs and meta')
 async def role(ctx: discord.ext.commands.Context):
 	if ctx.invoked_subcommand is None:
 		await ctx.send('No valid subcommand was provied')
 
-@role.group(pass_context=True,
-			brief='Creates a new instance',
-			description='Creates a new instance of the given object')
+@role.group(pass_context=True, brief='Creates a new instance', description='Creates a new instance of the given object')
 async def new(ctx: discord.ext.commands.Context):
 	if ctx.invoked_subcommand is None:
 		await ctx.send('No valid subpcommand was provided')
