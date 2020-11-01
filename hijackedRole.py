@@ -62,14 +62,12 @@ args = parser.parse_args()
 os.makedirs(args.db, exist_ok=True)
 if (args.puke):
 	if (os.path.isfile(os.path.join(args.db, 'config.pkl'))):
-		print((
-			'TOKEN		=>	{}\n' + 'Prefix  => {}\n' + 'Data Dir => {}\n' +
-			'Debug  => {}').format(
-				*pickle.load(open(os.path.join(args.db, 'config.pkl'), "wb"))))
+		print(('TOKEN		=>	{}\n' + 'Prefix  => {}\n' + 'Data Dir => {}\n' + 'Debug  => {}').format(*pickle.load(open(os.path.join(args.db, 'config.pkl'), "wb"))))
 		sys.exit(0)
 	else:
 		print("My stomach's empty, I can't puke")
 		sys.exit(1)
+
 if not (os.path.isfile(os.path.join(args.db, 'config.pkl'))):
 	if not (args.TOKEN):
 		print("--> A Bot token is required on first launch <--")
@@ -83,7 +81,15 @@ if not (os.path.isfile(os.path.join(args.db, 'config.pkl'))):
 					   DB_PATH=args.db,
 					   debug=args.debug)
 else:
-	config = CONF0(*pickle.dump(open(os.path.join(args.db, 'config.pkl'), 'rb')))
+	if not(args.TOKEN):
+		config = CONF0(*pickle.load(open(os.path.join(args.db, 'config.pkl'), 'rb')))
+	else:
+		pickle.dump(tuple((args.TOKEN, args.prefix, args.db, args.debug)),
+					open(os.path.join(args.db, 'config.pkl'), "wb"))
+		config = CONF0(TOKEN=args.TOKEN,
+					   CommandPrefix=args.prefix,
+					   DB_PATH=args.db,
+					   debug=args.debug)
 
 class GameClass():
 	"TODO: change classes to somethign more original"
@@ -213,7 +219,7 @@ class GameObject():
 		self.usable			=	usable
 		self.isAmmo			=	isAmmo
 		self.ammount		=	max(0, ammount)
-	def trow(ammount: int = 1):
+	def trow(self, ammount: int = 1):
 		self.ammount = max(0, self.ammount - ammount)
 	def __str__(self):
 		return ('<' + self.name + '>\n[ ' + str(self.description) + ' ]\n' +
