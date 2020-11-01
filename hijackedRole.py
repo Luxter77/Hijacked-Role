@@ -17,7 +17,7 @@ import argparse
 import random
 
 class CONF0():
-	# IIII'm gonna swwwiiii from a chandelieeeeeeer
+	# IIII'm gonna swwwiiiim from a chandelieeeeeeer
 	def __init__(self, CommandPrefix, TOKEN, DB_PATH, debug):
 		self.CommandPrefix	=	CommandPrefix
 		self.DB_PATH		=	DB_PATH
