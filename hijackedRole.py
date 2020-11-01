@@ -186,23 +186,23 @@ class CharStats():
 	def __str__(self):
 		return (
 			'Stats:'			+
-			'\n	str:			'	+	str(self.strg) +
-			'\n	int:			'	+	str(self.inte) +
-			'\n	spd:			'	+	str(self.sped) +
-			'\n	dex:			'	+	str(self.dext) +
-			'\n	wis:			'	+	str(self.wisd) +
-			'\n	con:			'	+	str(self.conn) +
-			'\n	chr:			'	+	str(self.char) +
-			'\n	luck:			'	+	str(self.luck) +
-			'\n	level:			'	+	str(self.levl) +
-			'\n	magic number:	'	+	str(self.seed)
+			'\n	str:			'	+	str(self.strg) +	' How much you strong'	+
+			'\n	int:			'	+	str(self.inte) +	' How much you think'	+
+			'\n	spd:			'	+	str(self.sped) +	' How fast you move'	+
+			'\n	dex:			'	+	str(self.dext) +	' How well you move'	+
+			'\n	wis:			'	+	str(self.wisd) +	' How well you think'	+
+			'\n	con:			'	+	str(self.conn) +	' How well you'			+
+			'\n	chr:			'	+	str(self.char) +	' How you'				+
+			'\n	luck:			'	+	str(self.luck) +	' How well'				+
+			'\n	level:			'	+	str(self.levl) +	' How much'				+
+			'\n	magic number:	'	+	str(self.seed) + 	' How.'
 		)
 
 class CharState():
 	'TODO: *'
 	def __init__(self, MaxHP: int = 5):
-		self.MaxHP = MaxHP
-		self.HP = MaxHP
+		self.MaxHP		=	MaxHP
+		self.HP			=	MaxHP
 
 class GameObject():
 	'''A thing that a Character can have or equip or use'''
@@ -214,7 +214,9 @@ class GameObject():
 		self.isequiped		=	isequiped
 		self.usable			=	usable
 		self.isAmmo			=	isAmmo
-		self.ammount		=	ammount
+		self.ammount		=	max(0, ammount)
+	def trow(ammount: int = 1):
+		self.ammount = max(0, self.ammount - ammount)
 	def __str__(self):
 		return ('<' + self.name + '>\n[ ' + str(self.description) + ' ]\n' +
 				'Stats:\n' + str(self.stats) + '\n' +
@@ -226,17 +228,19 @@ class GameObject():
 class Character():
 	"""Playable Character, OC, if you will"""
 	def __init__(self, name: str, alighn: list = [], stats: CharStats = None, gaem_class: GameClass = None):
-		self.name		= name
-		self.alighn		= alighn
-		self.stats		= stats
-		self.state		= CharState()
-		self.gaem_class	= gaem_class
-		self.inventory	= []
-	def addobject(self, _object: GameObject):
+		self.name			=	name
+		self.alighn			=	alighn
+		self.stats			=	stats
+		self.state			=	CharState()
+		self.gaem_class		=	gaem_class
+		self.inventory		=	[]
+	def addObject(self, _object: GameObject):
 		self.inventory.append(_object)
-	def delobject(self, id_: int):
+	def delObject(self, id_: int):
 		self.inventory.remove(id_ - 1)
-	def listobjects(self):
+	def delObjectAmmount(self, id_: int, ammount: int):
+		self.inventory[id_ - 1].trow(1) 
+	def listObjects(self):
 		return (((str(i) + ')) <' + self.inventory[i].name + '>::<' +
 				  str(self.inventory[i].ammount) + '>\n')
 				 for i in range(len(self.inventory))))
@@ -248,13 +252,12 @@ class Character():
 
 class Gamer():
 	'''Thing that plays and happens to be a discord user'''
-	def __init__(self, user: discord.user, chars: dict = {}, rollingAs: Character = None, isRolling: bool = False, isGM: bool = False):
-		# dict of Characters by id (TODO: what is an id?)
-		self.user = user  # Discord user, holds _a lot_ of data
-		self.chars = chars
-		self.isRolling = isRolling  # is this user engaging in roleplay now?
-		self.rollingAs = rollingAs  # if this user is rolling as someone, as who?
-		self.isGM = isGM  # is this user a Game Master?
+	def __init__(self, chars: dict = {}, rollingAs: Character = None, isRolling: bool = False, isGM: bool = False):
+		self.user			=	user 
+		self.chars			=	chars
+		self.isRolling		=	isRolling
+		self.rollingAs		=	rollingAs
+		self.isGM 			=	isGM
 	def __str__(self):
 		return ('<' + str(self.user.name) + '>::<' + str(self.user.id) +
 				'>\n' + ('This player is a GM\n' if (self.isGM) else '') +
@@ -267,6 +270,10 @@ class Gamer():
 class PlayerDB():
 	def __init__(self):
 		self.players = {}
+	def registerPlayer(player: Gamer):
+		self.players.add(player)
+	def purgePlayer(player: Gamer):
+		self.players.remove(player)
 
 class Campaing():
 	'''A place where the game concurs, the state is kept'''
