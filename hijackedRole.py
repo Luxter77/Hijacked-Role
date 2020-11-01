@@ -207,14 +207,14 @@ class CharState():
 class GameObject():
 	'''A thing that a Character can have or equip or use'''
 	def __init__(self, name: str, stats: CharStats, description: str = "What title says", equipable: bool = False, isequiped: bool = False, usable: bool = False, isAmmo: bool = False, ammount: int = 1):
-		self.name = name
-		self.stats = stats
-		self.description = description
-		self.equipable = equipable
-		self.isequiped = isequiped
-		self.usable = usable
-		self.isAmmo = isAmmo
-		self.ammount = ammount
+		self.name			=	name
+		self.stats			=	stats
+		self.description	=	description
+		self.equipable		=	equipable
+		self.isequiped		=	isequiped
+		self.usable			=	usable
+		self.isAmmo			=	isAmmo
+		self.ammount		=	ammount
 	def __str__(self):
 		return ('<' + self.name + '>\n[ ' + str(self.description) + ' ]\n' +
 				'Stats:\n' + str(self.stats) + '\n' +
