@@ -18,12 +18,11 @@ import random
 
 class CONF0():
 	# IIII'm gonna swwwiiii from a chandelieeeeeeer
-	def __init__(self, CommandPrefix, TOKEN, DB_PATH, debug):
+	def __init__(self, CommandPrefix: str, TOKEN: str, DB_PATH: str, debug: int):
 		self.CommandPrefix	=	CommandPrefix
 		self.DB_PATH		=	DB_PATH
 		self.TOKEN			=	TOKEN
 		self.debug			=	debug
-		self.LogChan		=	set()
 		self.LogAdmin		=	set()
 	def add_LogChan(self, Chan: discord.channel):
 		self.LogChan.add(Chan)
@@ -50,15 +49,14 @@ def _get_def_doc():
 		return (str(buf.value))
 	else:
 		import subprocess
-		return (subprocess.check_output(["xdg-user-dir", "DOCUMENTS"],
-										universal_newlines=True).strip())
+		return (subprocess.check_output(["xdg-user-dir", "DOCUMENTS"], universal_newlines=True).strip())
 
 parser = argparse.ArgumentParser(description='Configures Hijacked-Role')
-parser.add_argument("-T","--TOKEN",type=str,help="Discord API bot TOKEN",)
-parser.add_argument("-P","--prefix",type=str,help="Bot command prefix",default="$")
-parser.add_argument("-D","--db",type=_path,help="Bot Data directory",default=os.path.join(_get_def_doc(), 'Hijacked-Node'))
-parser.add_argument("-V","--debug",action="store_true",help="Discord channel(id) where to dump logs")
-parser.add_argument("-n","--puke",action="store_true",help="Prints configuration in file and returns (does nothing else)")
+parser.add_argument("-T",	"--TOKEN",	type=str,				help="Discord API bot TOKEN",)
+parser.add_argument("-P",	"--prefix",	type=str,				help="Bot command prefix",		default="$")
+parser.add_argument("-D",	"--db",		type=_path,				help="Bot Data directory",		default=os.path.join(_get_def_doc(), 'Hijacked-Node'))
+parser.add_argument("-V",	"--debug",	type=int,				help="Discord channel(id) where to dump logs")
+parser.add_argument("-n",	"--puke",	action="store_true",	help="Prints configuration in file and returns (does nothing else)")
 args = parser.parse_args()
 
 os.makedirs(args.db, exist_ok=True)
@@ -284,10 +282,9 @@ class Campaing():
 		self.gamers			=	gamers
 		self.GM				=	GM_
 	def __str__(self):
-		return (self.name + ':\n ' + self.description + '\n\n Game Master: ' +
-				str(self.GM.mention) + '\n' + ' Players: ' +
-				'\n   '.join([((str(gamer.mention)))
-							  for gamer in self.gamers]))
+		return (self.name + ':\n	'	+ self.description +
+		'\n\n  Game Master: ' + str(self.GM.user.mention) + '\n' +
+				'  Players: ' + '\n	'.join([((str(gamer.user.mention))) for gamer in self.gamers]))
 	def getNotes(self):
 		return ('\n'.join(self.notes))
 	def addNote(self, msg: str):
@@ -310,14 +307,14 @@ async def logMe(st, err_=False, tq=True):
 		print(_stderr) if (tq) else tqdm.write(_stderr)
 		print(st) if (tq) else tqdm.write(st)
 		try:
-			for Chan in config.LogChan:
+			with bot.get_channel(config.debug) as Chan:
 				await Chan.send('|-----------------ERR_ START-------------------|')
 				if (config.LogAdmin): await Chan.send(' '.join([str(admin.mention) for admin in config.LogAdmin]))
 				await Chan.send(st)
 				await Chan.send('|------------------ERR_ END--------------------|')
 		except:
 			try:
-				for Chan in config.LogChan:
+				with bot.get_channel(config.debug) as Chan:
 					await Chan.send('|--------------- ERR_ START ----------------|')
 					try:
 						if (config.LogAdmin): await Chan.send(' '.join([ str(admin.mention) for admin in config.LogAdmin ]))
@@ -335,11 +332,11 @@ async def logMe(st, err_=False, tq=True):
 		_stdout = st
 		print(_stdout) if (tq) else tqdm.write(_stdout)
 		try:
-			for Chan in config.LogChan:
+			with bot.get_channel(config.debug) as Chan:
 				await Chan.send(st)
 		except:
 			try:
-				for Chan in config.LogChan:
+				with bot.get_channel(config.debug) as Chan:
 					try:
 						try:
 							await Chan.send(st)
@@ -384,16 +381,19 @@ async def on_error(event_method, *args, **kwargs):
 		print('|------------------ ERR_ END ------------------|')
 
 async def doBootUp():  # spagget
-	async def sec():
+	async def sec(chan: discord.ChannelType):
 		await logMe("[ " + str(dt.datetime.now().timestamp()) + " ]")
 		await logMe(str(bot.user) + " Is connected to:")
 		await logMe('|----------------------------------------------|')
 		for guild in bot.guilds:
 			await logMe(" - [" + str(guild.id) + "]: " + str(guild.name) + ".")
+		global PDB
+		PDB = getPDB()
+		global CDB
+		CDB = getCDB()
 		await logMe('|----------------------------------------------|')
 		await logMe("|           Bootup Sequence complete           |")
-		# await genDB(config.DB_PATH)
-		# await CONN_V([], init = True)
+		await logMe('|----------------------------------------------|')
 		await bot.change_presence(activity=discord.Game(name='Soulcasting'))
 
 	await logMe('|-----------------doBootUp-st------------------|')
@@ -401,8 +401,8 @@ async def doBootUp():  # spagget
 	await logMe('|           Testing Testing 1, 2, 3            |')
 	await logMe('|----------------------------------------------|')
 	await bot.change_presence(activity=discord.Game(name='Waking Up...'))
-	if (LogChan):
-		async with bot.get_channel(LogChan[0]).typing():
+	if (config.debug):
+		async with bot.get_channel(config.debug).typing():
 			await sec()
 	else:
 		await sec()
