@@ -297,7 +297,7 @@ class Campaing():
 		'\n\tGame Master: ' + str(self.GM.user.mention) + '\n' +
 				'  Players: ' + '\n\t\t'.join([((str(gamer.user.mention))) for gamer in self.gamers]))
 	def getNotes(self):
-		return((str(idex)+':'+note) for note, index in enumerate(self.notes))
+		return((str(index)+':'+note) for note, index in enumerate(self.notes))
 	def addNote(self, msg: str):
 		self.notes.append(msg)
 	def delNote(self, id_: int):
