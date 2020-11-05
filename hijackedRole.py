@@ -18,12 +18,13 @@ import random
 
 class CONF0():
 	# IIII'm gonna swwwiiii from a chandelieeeeeeer
-	def __init__(self, CommandPrefix: str, TOKEN: str, DB_PATH: str, debug: int):
+	def __init__(self, CommandPrefix: str, TOKEN: str, DB_PATH: str, debug: int, logAdmin: discord.User, logChan: discord.channel):
 		self.CommandPrefix	=	CommandPrefix
 		self.DB_PATH		=	DB_PATH
 		self.TOKEN			=	TOKEN
 		self.debug			=	debug
-		self.LogAdmin		=	set()
+		self.LogAdmin		=	set(logAdmin)
+		self.LogChan		=	set(logChan)
 	def add_LogChan(self, Chan: discord.channel):
 		self.LogChan.add(Chan)
 	def del_LogChan(self, Chan: discord.channel):
@@ -90,7 +91,20 @@ else:
 					   CommandPrefix=args.prefix,
 					   DB_PATH=args.db,
 					   debug=args.debug)
+async def getPDB() -> PlayerDB:
+	try:
+		return(pickle.load(open(os.path.join(args.db, 'PDB.pkl'), 'rb')))
+	except Exception as Err_:
+		await logMe(Err_)
+		return(PlayerDB())
+async def getCDB() -> CampaingDB:
+	try:
+		return(pickle.load(open(os.path.join(args.db, 'CDB.pkl'), 'rb')))
+	except Exception as Err_:
+		await logMe(Err_)
+		return(CampaingDB())
 
+### HERE BE STUFF
 class GameClass():
 	"TODO: change classes to somethign more original"
 	"TODO: Make it so there are other classes"
@@ -272,12 +286,14 @@ class Gamer():
 				 (self.isRolling and bool(self.chars)) else ''))
 
 class PlayerDB():
-	def __init__(self):
-		self.players = {}
-	def registerPlayer(player: Gamer):
+	def registerPlayer(self, player: Gamer):
 		self.players.add(player)
-	def purgePlayer(player: Gamer):
+	def removePlayer(self, player: Gamer):
 		self.players.remove(player)
+	def __init__(self):
+		self.players = set()
+	def __str__(self):
+		return(str('Registered players are:'	+	('\n\t'.join(str(gamer)) for gamer in self.players)))
 
 class Campaing():
 	'''A place where the game concurs, the state is kept'''
@@ -289,18 +305,24 @@ class Campaing():
 		self.GM				=	GM_
 	def __str__(self):
 		return (self.name + ':\n	'	+ self.description +
-		'\n\n  Game Master: ' + str(self.GM.user.mention) + '\n' +
-				'  Players: ' + '\n	'.join([((str(gamer.user.mention))) for gamer in self.gamers]))
+		'\n\tGame Master: ' + str(self.GM.user.mention) + '\n' +
+				'  Players: ' + '\n\t\t'.join([((str(gamer.user.mention))) for gamer in self.gamers]))
 	def getNotes(self):
-		return ('\n'.join(self.notes))
+		return((str(idex)+':'+note) for note, index in enumerate(self.notes))
 	def addNote(self, msg: str):
 		self.notes.append(msg)
 	def delNote(self, id_: int):
 		self.notes.remove(id_)
 
 class CampaingDB():
+	def registerPlayer(self, campaing: Campaing):
+		self.campaings.add(campaing)
+	def removePlayer(self, campaing: Campaing):
+		self.campaings.remove(campaing)
+	def __str__(self):
+		return(str('Registered campaings are:'	+	('\n\t'.join(str(camp) for camp in self.campaings))))
 	def __init__(self):
-		self.campaings = {}
+		self.campaings = set()
 
 # init
 bot = commands.Bot(command_prefix=config.CommandPrefix, case_insensitive=True)
@@ -394,9 +416,9 @@ async def doBootUp():  # spagget
 		for guild in bot.guilds:
 			await logMe(" - [" + str(guild.id) + "]: " + str(guild.name) + ".")
 		global PDB
-		PDB = getPDB()
+		PDB = await getPDB()
 		global CDB
-		CDB = getCDB()
+		CDB = await getCDB()
 		await logMe('|----------------------------------------------|')
 		await logMe("|           Bootup Sequence complete           |")
 		await logMe('|----------------------------------------------|')
@@ -433,10 +455,10 @@ async def new(ctx: discord.ext.commands.Context):
 
 @new.group(pass_context=True)
 async def character(ctx: discord.ext.commands.Context):
-	if (ctx.author in PLAYER_DB.get_players()):
+	if (ctx.author in PDB.get_players()):
 		await ctx.send('')
 	else:
-		PLAYER_DB.add_player(ctx.author)
+		PDB.add_player(ctx.author)
 
 # DRAGONS END HERE; #
 bot.run(config.TOKEN)
