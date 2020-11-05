@@ -24,8 +24,8 @@ class CONF0():
 		self.DB_PATH		=	DB_PATH
 		self.TOKEN			=	TOKEN
 		self.debug			=	debug
-		self.LogAdmin		=	set(logAdmin)
-		self.LogChan		=	set(logChan)
+		self.LogAdmin		=	set(logAdmin)	if (logAdmin)	else set()
+		self.LogChan		=	set(logChan)	if (logChan)	else set()
 	def add_LogChan(self, Chan: discord.channel):
 		self.LogChan.add(Chan)
 	def del_LogChan(self, Chan: discord.channel):
@@ -56,7 +56,7 @@ def _get_def_doc():
 parser = argparse.ArgumentParser(description='Configures Hijacked-Role')
 parser.add_argument("-T",	"--TOKEN",	type=str,				help="Discord API bot TOKEN",)
 parser.add_argument("-P",	"--prefix",	type=str,				help="Bot command prefix",		default="$")
-parser.add_argument("-D",	"--db",		type=_path,				help="Bot Data directory",		default=os.path.join(_get_def_doc(), 'Hijacked-Node'))
+parser.add_argument("-D",	"--db",		type=_path,				help="Bot Data directory",		default=os.path.join(_get_def_doc(), 'Hijacked-Role'))
 parser.add_argument("-V",	"--debug",	type=int,				help="Discord channel(id) where to dump logs")
 parser.add_argument("-n",	"--puke",	action="store_true",	help="Prints configuration in file and returns (does nothing else)")
 args = parser.parse_args()
@@ -411,7 +411,7 @@ async def on_error(event_method, *args, **kwargs):
 		print('|------------------ ERR_ END ------------------|')
 
 async def doBootUp():  # spagget
-	async def sec(chan: discord.ChannelType):
+	async def sec():
 		await logMe("[ " + str(dt.datetime.now().timestamp()) + " ]")
 		await logMe(str(bot.user) + " Is connected to:")
 		await logMe('|----------------------------------------------|')
@@ -431,8 +431,8 @@ async def doBootUp():  # spagget
 	await logMe('|           Testing Testing 1, 2, 3            |')
 	await logMe('|----------------------------------------------|')
 	await bot.change_presence(activity=discord.Game(name='Waking Up...'))
-	if (config.debug):
-		async with bot.get_channel(config.debug).typing():
+	if(config.LogChan):
+		with config.LogChan[0].typing():
 			await sec()
 	else:
 		await sec()
