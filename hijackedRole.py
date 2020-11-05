@@ -411,31 +411,24 @@ async def on_error(event_method, *args, **kwargs):
 		print('|------------------ ERR_ END ------------------|')
 
 async def doBootUp():  # spagget
-	async def sec():
-		await logMe("[ " + str(dt.datetime.now().timestamp()) + " ]")
-		await logMe(str(bot.user) + " Is connected to:")
-		await logMe('|----------------------------------------------|')
-		for guild in bot.guilds:
-			await logMe(" - [" + str(guild.id) + "]: " + str(guild.name) + ".")
-		global PDB
-		PDB = await getPDB()
-		global CDB
-		CDB = await getCDB()
-		await logMe('|----------------------------------------------|')
-		await logMe("|           Bootup Sequence complete           |")
-		await logMe('|----------------------------------------------|')
-		await bot.change_presence(activity=discord.Game(name='Soulcasting'))
-
 	await logMe('|-----------------doBootUp-st------------------|')
 	# TODO: Think of a cool phrase to replace this one
 	await logMe('|           Testing Testing 1, 2, 3            |')
 	await logMe('|----------------------------------------------|')
 	await bot.change_presence(activity=discord.Game(name='Waking Up...'))
-	if(config.LogChan):
-		with config.LogChan[0].typing():
-			await sec()
-	else:
-		await sec()
+	await logMe("[ " + str(dt.datetime.now().timestamp()) + " ]")
+	await logMe(str(bot.user) + " Is connected to:")
+	await logMe('|----------------------------------------------|')
+	for guild in bot.guilds:
+		await logMe(" - [" + str(guild.id) + "]: " + str(guild.name) + ".")
+	global PDB
+	global CDB
+	PDB = await getPDB()
+	CDB = await getCDB()
+	await logMe('|----------------------------------------------|')
+	await logMe("|           Bootup Sequence complete           |")
+	await logMe('|----------------------------------------------|')
+	await bot.change_presence(activity=discord.Game(name='Soulcasting'))
 	await logMe('|----------------doBootUp End------------------|')
 
 @bot.event
