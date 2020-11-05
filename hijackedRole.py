@@ -18,7 +18,7 @@ import random
 
 class CONF0():
 	# IIII'm gonna swwwiiii from a chandelieeeeeeer
-	def __init__(self, CommandPrefix: str, TOKEN: str, DB_PATH: str, debug: int, logAdmin: discord.User, logChan: discord.channel):
+	def __init__(self, CommandPrefix: str, TOKEN: str, DB_PATH: str, debug: int, logAdmin: discord.User = None, logChan: discord.channel = None):
 		self.CommandPrefix	=	CommandPrefix
 		self.DB_PATH		=	DB_PATH
 		self.TOKEN			=	TOKEN
@@ -91,18 +91,6 @@ else:
 					   CommandPrefix=args.prefix,
 					   DB_PATH=args.db,
 					   debug=args.debug)
-async def getPDB() -> PlayerDB:
-	try:
-		return(pickle.load(open(os.path.join(args.db, 'PDB.pkl'), 'rb')))
-	except Exception as Err_:
-		await logMe(Err_)
-		return(PlayerDB())
-async def getCDB() -> CampaingDB:
-	try:
-		return(pickle.load(open(os.path.join(args.db, 'CDB.pkl'), 'rb')))
-	except Exception as Err_:
-		await logMe(Err_)
-		return(CampaingDB())
 
 ### HERE BE STUFF
 class GameClass():
@@ -270,7 +258,7 @@ class Character():
 
 class Gamer():
 	'''Thing that plays and happens to be a discord user'''
-	def __init__(self, chars: dict = {}, rollingAs: Character = None, isRolling: bool = False, isGM: bool = False):
+	def __init__(self, user: discord.User, chars: dict = {}, rollingAs: Character = None, isRolling: bool = False, isGM: bool = False):
 		self.user			=	user 
 		self.chars			=	chars
 		self.isRolling		=	isRolling
@@ -323,6 +311,19 @@ class CampaingDB():
 		return(str('Registered campaings are:'	+	('\n\t'.join(str(camp) for camp in self.campaings))))
 	def __init__(self):
 		self.campaings = set()
+
+async def getPDB() -> PlayerDB:
+	try:
+		return(pickle.load(open(os.path.join(args.db, 'PDB.pkl'), 'rb')))
+	except Exception as Err_:
+		await logMe(Err_)
+		return(PlayerDB())
+async def getCDB() -> CampaingDB:
+	try:
+		return(pickle.load(open(os.path.join(args.db, 'CDB.pkl'), 'rb')))
+	except Exception as Err_:
+		await logMe(Err_)
+		return(CampaingDB())
 
 # init
 bot = commands.Bot(command_prefix=config.CommandPrefix, case_insensitive=True)
