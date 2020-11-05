@@ -337,7 +337,7 @@ async def logMe(st, err_=False, tq=True):
 		print(_stderr) if (tq) else tqdm.write(_stderr)
 		print(st) if (tq) else tqdm.write(st)
 		try:
-			with bot.get_channel(config.debug) as Chan:
+			with bot.get_channel(config.LogChan) as Chan:
 				await Chan.send('|-----------------ERR_ START-------------------|')
 				if (config.LogAdmin): await Chan.send(' '.join([str(admin.mention) for admin in config.LogAdmin]))
 				await Chan.send(st)
