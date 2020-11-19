@@ -20,7 +20,8 @@ import re
 class CONF0():
     '''IIII'm gonna swwwiiii from a chandelieeeeeeer'''
 
-    def __init__(self, CommandPrefix: str, TOKEN: str, DB_PATH: str, debug: int, logAdmin: discord.User = None, logChan: discord.channel = None):
+    def __init__(self, CommandPrefix: str, TOKEN: str, DB_PATH: str, debug: int, 
+                 logAdmin: discord.User = None, logChan: discord.channel = None):
         self.CommandPrefix	=	CommandPrefix
         self.DB_PATH		=	DB_PATH
         self.TOKEN			=	TOKEN
@@ -63,17 +64,23 @@ def _get_def_doc():
 
 
 parser = argparse.ArgumentParser(description='Configures Hijacked-Role')
-parser.add_argument("-T",	"--TOKEN",	type=str,				help="Discord API bot TOKEN",)
-parser.add_argument("-P",	"--prefix",	type=str,				help="Bot command prefix",		default="$")
-parser.add_argument("-D",	"--db",		type=_path,				help="Bot Data directory",		default=os.path.join(_get_def_doc(), 'Hijacked-Role'))
-parser.add_argument("-V",	"--debug",	type=int,				help="Discord channel(id) where to dump logs")
-parser.add_argument("-n",	"--puke",	action="store_true",	help="Prints configuration in file and returns (does nothing else)")
+
+parser.add_argument("-T",	"--TOKEN",	type=str,			help="Discord API bot TOKEN",)
+parser.add_argument("-P",	"--prefix",	type=str,			help="Bot command prefix",
+                    default="$")
+parser.add_argument("-D",	"--db",		type=_path,			help="Bot Data directory",
+                    default=os.path.join(_get_def_doc(), 'Hijacked-Role'))
+parser.add_argument("-V",	"--debug",	type=int,
+                    help="Discord channel(id) where to dump logs")
+parser.add_argument("-n",	"--puke",	action="store_true",
+                    help="Prints configuration in file and returns (does nothing else)")
+
 args = parser.parse_args()
 
 os.makedirs(args.db, exist_ok=True)
 if (args.puke):
     if (os.path.isfile(os.path.join(args.db, 'config.pkl'))):
-        print(('TOKEN		=>	{}\n' + 'Prefix  => {}\n' + 'Data Dir => {}\n' + 'Debug  => {}').format(*pickle.load(open(os.path.join(args.db, 'config.pkl'), "wb"))))
+        print(('TOKEN\t\t=>\t{}\n' + 'Prefix\t=>\t{}\n' + 'Data Dir\t=>\t{}\n' + 'Debug\t=>\t{}').format(*pickle.load(open(os.path.join(args.db, 'config.pkl'), "wb"))))
         sys.exit(0)
     else:
         print("My stomach's empty, I can't puke")
@@ -209,23 +216,26 @@ class CharStats():
     luck 			(luck): How well you,\n
     seed			(seed): How.
     '''
-    def __init__(self, strg: int = 10, inte: int = 10, sped: int = 10, dext: int = 10, wisd: int = 10, conn: int = 10, char: int = 10, luck: int = 50, levl: int = 1, seed: int = None):
-        self.strg, self.inte, self.sped, self.dext, self.wisd, self.conn, self.char, self.luck, self.levl = strg, inte, sped, dext, wisd, conn, char, luck, levl
+    def __init__(self, strg: int = 10, inte: int = 10, sped: int = 10, dext: int = 10,
+                 wisd: int = 10, conn: int = 10, char: int = 10, luck: int = 50,
+                 levl: int = 1, seed: int = None):
+        self.wisd, self.conn, self.char, self.luck, self.levl = wisd, conn, char, luck, levl
+        self.strg, self.inte, self.sped, self.dext = strg, inte, sped, dext
         self.seed = seed if (seed) else random.randint(-65535, 65536)
 
     def __str__(self):
         return (
             'Stats:'			+
-            '\n	str:			'	+	str(self.strg) +	' How much you strong'	+
-            '\n	int:			'	+	str(self.inte) +	' How much you think'	+
-            '\n	spd:			'	+	str(self.sped) +	' How fast you move'	+
-            '\n	dex:			'	+	str(self.dext) +	' How well you move'	+
-            '\n	wis:			'	+	str(self.wisd) +	' How well you think'	+
-            '\n	con:			'	+	str(self.conn) +	' How well you'			+
-            '\n	chr:			'	+	str(self.char) +	' How you'				+
-            '\n	luck:			'	+	str(self.luck) +	' How well'				+
-            '\n	level:			'	+	str(self.levl) +	' How much'				+
-            '\n	magic number:	'	+	str(self.seed) + 	' How.'
+            '\n\tstr:\t\t\t'	+	str(self.strg) +	' How much you strong'	+
+            '\n\tint:\t\t\t'	+	str(self.inte) +	' How much you think'	+
+            '\n\tspd:\t\t\t'	+	str(self.sped) +	' How fast you move'	+
+            '\n\tdex:\t\t\t'	+	str(self.dext) +	' How well you move'	+
+            '\n\twis:\t\t\t'	+	str(self.wisd) +	' How well you think'	+
+            '\n\tcon:\t\t\t'	+	str(self.conn) +	' How well you'			+
+            '\n\tchr:\t\t\t'	+	str(self.char) +	' How you'				+
+            '\n\tluck:\t\t\t'	+	str(self.luck) +	' How well'				+
+            '\n\tlevel:\t\t\t'	+	str(self.levl) +	' How much'				+
+            '\n\tmagic number:\t'	+	str(self.seed) + 	' How.'
         )
 
 class CharState():
@@ -236,7 +246,9 @@ class CharState():
 
 class GameObject():
     '''A thing that a Character can have or equip or use'''
-    def __init__(self, name: str, stats: CharStats, description: str = "What title says", equipable: bool = False, isequiped: bool = False, usable: bool = False, isAmmo: bool = False, ammount: int = 1):
+    def __init__(self, name: str, stats: CharStats, description: str = "What title says",
+                 equipable: bool = False, isequiped: bool = False, usable: bool = False,
+                 isAmmo: bool = False, ammount: int = 1):
         self.name			=	name
         self.stats			=	stats
         self.description	=	description
@@ -259,7 +271,8 @@ class GameObject():
 
 class Character():
     """Playable Character, OC, if you will"""
-    def __init__(self, name: str, alighn: list = [], stats: CharStats = None, gaem_class: GameClass = None):
+    def __init__(self, name: str, alighn: list = [], stats: CharStats = None,
+                 gaem_class: GameClass = None):
         self.name			=	name
         self.alighn			=	alighn
         self.stats			=	stats
@@ -291,7 +304,8 @@ class Character():
 class Gamer():
     '''Thing that plays and happens to be a discord user'''
 
-    def __init__(self, user: discord.User, chars: dict = {}, rollingAs: Character = None, isRolling: bool = False, isGM: bool = False):
+    def __init__(self, user: discord.User, chars: dict = {}, rollingAs: Character = None,
+                 isRolling: bool = False, isGM: bool = False):
         self.user			=	user
         self.chars			=	chars
         self.isRolling		=	isRolling
@@ -319,12 +333,13 @@ class PlayerDB():
         self.players = set()
 
     def __str__(self):
-        return(str('Registered players are:'	+	('\n\t'.join(str(gamer)) for gamer in self.players)))
+        return(str('Registered players are:' + ('\n\t'.join(str(gamer)) for gamer in self.players)))
 
 class Campaing():
     '''A place where the game concurs, the state is kept'''
 
-    def __init__(self, name: str, GM_: Gamer, description: str = "What title says", notes: list = [], gamers: set = {}, Characters: list = []):
+    def __init__(self, name: str, GM_: Gamer, description: str = "What title says",
+                 notes: list = [], gamers: set = {}, Characters: list = []):
         self.name			=	name
         self.description	=	description
         self.notes			=	notes
@@ -333,8 +348,8 @@ class Campaing():
 
     def __str__(self):
         return (self.name + ':\n	'	+ self.description +
-                '\n\tGame Master: ' + str(self.GM.user.mention) + '\n' +
-                '  Players: ' + '\n\t\t'.join([((str(gamer.user.mention))) for gamer in self.gamers]))
+                '\n\tGame Master: ' + str(self.GM.user.mention) + '\n' + '\tPlayers: ' +
+                '\n\t\t'.join([((str(gamer.user.mention))) for gamer in self.gamers]))
 
     def getNotes(self):
         return((str(index) + ':' + note) for note, index in enumerate(self.notes))
@@ -354,7 +369,8 @@ class CampaingDB():
         self.campaings.remove(campaing)
 
     def __str__(self):
-        return(str('Registered campaings are:'	+	('\n\t'.join(str(camp) for camp in self.campaings))))
+        return(str('Registered campaings are:' +
+               ('\n\t'.join(str(camp) for camp in self.campaings))))
 
     def __init__(self):
         self.campaings = set()
@@ -387,7 +403,8 @@ async def logMe(st, err_=False, tq=True):
             with bot.get_channel(config.LogChan) as Chan:
                 await Chan.send('|-----------------ERR_ START-------------------|')
                 if (config.LogAdmin):
-                    await Chan.send(' '.join([str(admin.mention) for admin in config.LogAdmin]))
+                    await Chan.send(
+                        ' '.join([str(admin.mention) for admin in config.LogAdmin]))
                 await Chan.send(st)
                 await Chan.send('|------------------ERR_ END--------------------|')
         except:
@@ -396,11 +413,13 @@ async def logMe(st, err_=False, tq=True):
                     await Chan.send('|--------------- ERR_ START ----------------|')
                     try:
                         if (config.LogAdmin):
-                            await Chan.send(' '.join([str(admin.mention) for admin in config.LogAdmin]))
+                            await Chan.send(
+                                ' '.join([str(admin.mention) for admin in config.LogAdmin]))
                         await Chan.send(str(st))
                     except:
                         if (config.LogAdmin):
-                            await Chan.send(' '.join([str(admin.mention)for admin in config.LogAdmin]))
+                            await Chan.send(
+                                ' '.join([str(admin.mention)for admin in config.LogAdmin]))
                         await Chan.send("Some unprinteable error happened... ")
                     await Chan.send('|------------------ERR_ END--------------------|')
             except:
@@ -488,12 +507,14 @@ async def on_ready():
 # HERE BE DRAGONS;
 # @bot.command(pass_context=True, brief='', description='')
 
-@bot.group(pass_context=True, brief='Role System Command', description='Controls everything related roleplay mechanincs and meta')
+@bot.group(pass_context=True, brief='Role System Command',
+           description='Controls everything related roleplay mechanincs and meta')
 async def role(ctx: discord.ext.commands.Context):
     if ctx.invoked_subcommand is None:
         await ctx.send('No valid subcommand was provied')
 
-@role.group(pass_context=True, brief='Creates a new instance', description='Creates a new instance of the given object')
+@role.group(pass_context=True, brief='Creates a new instance',
+            description='Creates a new instance of the given object')
 async def new(ctx: discord.ext.commands.Context):
     if ctx.invoked_subcommand is None:
         await ctx.send('No valid subpcommand was provided')
