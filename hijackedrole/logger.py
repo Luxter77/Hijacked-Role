@@ -36,7 +36,7 @@ class LogMe:
                             ' '.join([str(admin.mention) for admin in self.LogAdmin]))
                     await Chan.send(st)
                     await Chan.send(self._std['EE'])
-            except:
+            except Exception:
                 try:
                     with self.bot.get_channel(self.debug) as Chan:
                         await Chan.send(self._std['ES'])
@@ -45,13 +45,13 @@ class LogMe:
                                 await Chan.send(
                                     ' '.join([str(admin.mention) for admin in self.LogAdmin]))
                             await Chan.send(str(st))
-                        except:
+                        except Exception:
                             if (self.LogAdmin):
                                 await Chan.send(
                                     ' '.join([str(admin.mention)for admin in self.LogAdmin]))
                             await Chan.send("Some unprinteable error happened...")
                         await Chan.send(self._std['EE'])
-                except:
+                except Exception:
                     _std = "Ah for hugs sake something went horribly grong! AGAIN"
                     print(_std) if (tq) else tqdm.write(_std)
             print(self._std['EE']) if (tq) else tqdm.write(self._std['EE'])
@@ -60,18 +60,18 @@ class LogMe:
             try:
                 with self.bot.get_channel(self.debug) as Chan:
                     await Chan.send(st)
-            except:
+            except Exception:
                 try:
                     with self.bot.get_channel(self.debug) as Chan:
                         try:
                             try:
                                 await Chan.send(st)
-                            except:
+                            except Exception:
                                 await Chan.send(str(type(st)))
                                 await Chan.send(str(st))
-                        except:
+                        except Exception:
                             await Chan.send(self._std['!?'])
-                except:
+                except Exception:
                     await Chan.send(self._std['LS'])
                     await self(self._std['!!'], True)
                     await Chan.send(self._std['LE'])
