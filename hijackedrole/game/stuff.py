@@ -1,49 +1,9 @@
 import random
 
-from discord.channel import TextChannel
-from discord import User
+from discord import User as DiscordUser
 
 from hijackedrole.game.classes import GameClass
-
-class CharStats():
-    '''
-    strength		(strg): How much you strong,\n
-    inteligence 	(inte): How much you think,\n
-    speed			(sped): How fast you move,\n
-    dexterity		(dext): How well you move,\n
-    wisdom			(wisd):	How well you think,\n
-    constitution	(conn):	How well you,\n
-    carisma			(char): How nice you,\n
-    luck 			(luck): How well you,\n
-    seed			(seed): How.
-    '''
-    def __init__(self, strg: int = 10, inte: int = 10, sped: int = 10, dext: int = 10,
-                 wisd: int = 10, conn: int = 10, char: int = 10, luck: int = 50,
-                 levl: int = 1, seed: int = None):
-        self.wisd, self.conn, self.char, self.luck, self.levl = wisd, conn, char, luck, levl
-        self.strg, self.inte, self.sped, self.dext = strg, inte, sped, dext
-        self.seed = seed if (seed) else random.randint(-65535, 65536)
-
-    def __str__(self):
-        return (
-            'Stats:'			+
-            '\n\tstr:\t\t\t'	+	str(self.strg) +	' How much you strong'	+
-            '\n\tint:\t\t\t'	+	str(self.inte) +	' How much you think'	+
-            '\n\tspd:\t\t\t'	+	str(self.sped) +	' How fast you move'	+
-            '\n\tdex:\t\t\t'	+	str(self.dext) +	' How well you move'	+
-            '\n\twis:\t\t\t'	+	str(self.wisd) +	' How well you think'	+
-            '\n\tcon:\t\t\t'	+	str(self.conn) +	' How well you'			+
-            '\n\tchr:\t\t\t'	+	str(self.char) +	' How you'				+
-            '\n\tluck:\t\t\t'	+	str(self.luck) +	' How well'				+
-            '\n\tlevel:\t\t\t'	+	str(self.levl) +	' How much'				+
-            '\n\tmagic number:\t'	+	str(self.seed) + 	' How.'
-        )
-
-class CharState():
-    'TODO: *'
-    def __init__(self, MaxHP: int = 5):
-        self.MaxHP		=	MaxHP
-        self.HP			=	MaxHP
+from hijackedrole.game.stats import CharStats, CharState
 
 class GameObject():
     '''A thing that a Character can have or equip or use'''
@@ -106,7 +66,7 @@ class Character():
 class Gamer():
     '''Thing that plays and happens to be a discord user'''
 
-    def __init__(self, user: User, chars: dict = {}, rollingAs: Character = None,
+    def __init__(self, user: DiscordUser, chars: dict = {}, rollingAs: Character = None,
                  isRolling: bool = False, isGM: bool = False):
         self.user			=	user
         self.chars			=	chars
