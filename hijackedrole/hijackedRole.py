@@ -41,11 +41,11 @@ async def on_command_error(context, exception):
     print('|---------------- ERR_ END -----------------|')
     try:
         await logMe(context.message.content)
-    except:
+    except Exception:
         None
     try:
         await logMe(exception, True)
-    except:
+    except Exception:
         None
 
 @bot.event
@@ -53,15 +53,19 @@ async def on_error(event_method, *args, **kwargs):
     try:
         await logMe(" ``` " + event_method + " ``` ", True)
         await logMe(" ``` " + traceback.format_exc() + " ``` ", True)
-    except:
+    except Exception:
         print('|------------------ERR_ START------------------|')
         print(' Ignoring exception in {}'.format(event_method), file=sys.stderr)
         traceback.print_exc()
         print('|------------------ ERR_ END ------------------|')
 
 async def doBootUp():  # spagget
+    # Set up logging facility
+    global logMe
+    logMe = LogMe(bot, config)
+
+    # Initialize stuff
     await logMe('|-----------------doBootUp-st------------------|')
-    # TODO: Think of a cool phrase to replace this one
     await logMe('|           Testing Testing 1, 2, 3            |')
     await logMe('|----------------------------------------------|')
     await bot.change_presence(activity=discord.Game(name='Waking Up...'))
@@ -82,8 +86,6 @@ async def doBootUp():  # spagget
 
 @bot.event
 async def on_ready():
-    global logMe
-    logMe = LogMe(bot, config)
     await doBootUp()
 
 # HERE BE DRAGONS;
