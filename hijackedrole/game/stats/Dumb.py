@@ -17,6 +17,8 @@ class DumbStats():
                  EAA: int = None, EDE: int = None, ACC: int = None,
                  EVA: int = None, asList: list = None):
         if(asList):
+            if(len(asList) != len(self)):
+                raise(IndexError(f'asList must have exactly {str(len(self))} entries'))
             self.MaxHP, self.HP, self.MaxSP, self.SP, self.ATT, self.DEF, self.SPE, self.EAA, self.EDE, self.ACC, self.EVA = asList
         else:
             self.MaxHP = self.HP = initMaxHP

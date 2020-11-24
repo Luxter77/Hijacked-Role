@@ -28,6 +28,8 @@ class CharStats():
                  wisd: int = 10, conn: int = 10, char: int = 10, luck: int = 50,
                  levl: int = 1, seed: int = None, asList: list = None) -> None:
         if(asList):
+            if(len(asList) != len(self)):
+                raise(IndexError(f'asList must have exactly {str(len(self))} entries'))
             self.strg, self.inte, self.sped, self.dext, self.wisd = asList[:5]  # the things I do so
             self.conn, self.char, self.luck, self.levl, self.seed = asList[5:]  # flake8 is happy :)
         else:
