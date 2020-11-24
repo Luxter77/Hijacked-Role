@@ -40,71 +40,87 @@ class CharStats():
                                  self.sped + other.sped, self.dext + other.dext,
                                  self.wisd + other.wisd, self.conn + other.conn,
                                  self.char + other.char, self.luck + other.luck,
-                                 self.levl + other.levl, max((self.seed + other.seed) / 2, -65536)]))
+                                 self.levl + other.levl,
+                                 max((self.seed + other.seed) / 2, -65536)]))
 
     def __sub__(self, other) -> 'CharStats':
         return(CharStats(asList=[self.strg - other.strg, self.inte - other.inte,
                                  self.sped - other.sped, self.dext - other.dext,
                                  self.wisd - other.wisd, self.conn - other.conn,
                                  self.char - other.char, self.luck - other.luck,
-                                 self.levl - other.levl, min((self.seed - other.seed) * 2, 65536)]))
+                                 self.levl - other.levl,
+                                 min((self.seed - other.seed) * 2, 65536)]))
 
     def __array__(self) -> np.array:
         return(np.array(list(self)))
 
     def __mul__(self, other) -> 'CharStats':
         if(len(self) == len(other)):
-            return(CharStats(asList=[(list(self)[i] * list(other)[i]) for i in range(0, len(self) - 1)]))
+            return(CharStats(asList=[
+                (list(self)[i] * list(other)[i]) for i in range(0, len(self) - 1)]))
         elif(type(self) is int):
-            return(CharStats(asList=[(list(self)[i] * other) for i in range(0, len(self) - 1)]))
+            return(CharStats(asList=[
+                (list(self)[i] * other) for i in range(0, len(self) - 1)]))
         else:
             raise(NotImplementedError)
 
     def __truediv__(self, other) -> 'CharStats':
         if(len(self) == len(other)):
-            return(CharStats(asList=[(list(self)[i] / list(other)[i]) for i in range(0, len(self) - 1)]))
+            return(CharStats(asList=[
+                (list(self)[i] / list(other)[i]) for i in range(0, len(self) - 1)]))
         elif(type(self) is int):
-            return(CharStats(asList=[(list(self)[i] / other) for i in range(0, len(self) - 1)]))
+            return(CharStats(asList=[
+                (list(self)[i] / other) for i in range(0, len(self) - 1)]))
         else:
             raise(NotImplementedError)
 
     def __mod__(self, other) -> 'CharStats':
         if(len(self) == len(other)):
-            return(CharStats(asList=[(list(self)[i] % list(other)[i]) for i in range(0, len(self) - 1)]))
+            return(CharStats(asList=[
+                (list(self)[i] % list(other)[i]) for i in range(0, len(self) - 1)]))
         elif(type(self) is int):
-            return(CharStats(asList=[(list(self)[i] % other) for i in range(0, len(self) - 1)]))
+            return(CharStats(asList=[
+                (list(self)[i] % other) for i in range(0, len(self) - 1)]))
         else:
             raise(NotImplementedError)
 
     def __pow__(self, other) -> 'CharStats':
         if(len(self) == len(other)):
-            return(CharStats(asList=[(list(self)[i] ** list(other)[i]) for i in range(0, len(self) - 1)]))
+            return(CharStats(asList=[
+                (list(self)[i] ** list(other)[i]) for i in range(0, len(self) - 1)]))
         elif(type(self) is int):
-            return(CharStats(asList=[(list(self)[i] ** other) for i in range(0, len(self) - 1)]))
+            return(CharStats(asList=[
+                (list(self)[i] ** other) for i in range(0, len(self) - 1)]))
         else:
             raise(NotImplementedError)
 
     def __floordiv__(self, other) -> 'CharStats':
         if(len(self) == len(other)):
-            return(CharStats(asList=[(list(self)[i] // list(other)[i]) for i in range(0, len(self) - 1)]))
+            return(CharStats(asList=[
+                (list(self)[i] // list(other)[i]) for i in range(0, len(self) - 1)]))
         elif(type(self) is int):
-            return(CharStats(asList=[(list(self)[i] // other) for i in range(0, len(self) - 1)]))
+            return(CharStats(asList=[
+                (list(self)[i] // other) for i in range(0, len(self) - 1)]))
         else:
             raise(NotImplementedError)
 
     def __matmul__(self, other) -> 'CharStats':
         if(len(self) == len(other)):
-            return(CharStats(asList=[(list(self)[i] @ list(other)[i]) for i in range(0, len(self) - 1)]))
+            return(CharStats(asList=[
+                (list(self)[i] @ list(other)[i]) for i in range(0, len(self) - 1)]))
         elif(type(self) is int):
-            return(CharStats(asList=[(list(self)[i] @ other) for i in range(0, len(self) - 1)]))
+            return(CharStats(asList=[
+                (list(self)[i] @ other) for i in range(0, len(self) - 1)]))
         else:
             raise(NotImplementedError)
 
     def __xor__(self, other) -> 'CharStats':
         if(len(self) == len(other)):
-            return(CharStats(asList=[(list(self)[i] ^ list(other)[i]) for i in range(0, len(self) - 1)]))
+            return(CharStats(asList=[
+                (list(self)[i] ^ list(other)[i]) for i in range(0, len(self) - 1)]))
         elif(type(self) is int):
-            return(CharStats(asList=[(list(self)[i] ^ other) for i in range(0, len(self) - 1)]))
+            return(CharStats(asList=[
+                (list(self)[i] ^ other) for i in range(0, len(self) - 1)]))
         else:
             raise(NotImplementedError)
 
@@ -131,9 +147,10 @@ class CharStats():
                 self.conn, self.char, self.luck, self.levl, self.seed])
 
     def __dic__(self) -> dict:
-        return({'strg': self.strg, 'inte': self.inte, 'sped': self.sped, 'dext': self.dext,
-                'wisd': self.wisd, 'conn': self.conn, 'char': self.char, 'luck': self.luck,
-                'levl': self.levl, 'seed': self.seed})
+        return({'strg': self.strg, 'inte': self.inte, 'sped': self.sped, 
+                'dext': self.dext, 'wisd': self.wisd, 'conn': self.conn,
+                'char': self.char, 'luck': self.luck, 'levl': self.levl,
+                'seed': self.seed})
 
     def __str__(self) -> str:
         return (
