@@ -4,14 +4,46 @@ from statistics import median
 import numpy as np
 import random  # np.random is hugging slow
 
-class DumbStats():
-    '10:KILL.LEVEL.LOOT.GOTO 10'
-    def averge(self) -> int:
+gclass StatsBase():
+	def averge(self) -> int:
         return int()
 
     def median(self) -> int:
         return median(list(self))
 
+    def __bool__(self) -> bool:
+        return(True)
+
+	def __array__(self) -> np.array:
+        return(np.array(list(self)))
+
+    def __concat__(self) -> None:
+        raise(NotImplementedError('No?????'))
+
+	def __repr__(self) -> str:
+        return(self.__str__())
+
+    def __lt__(self, other) -> bool:
+        return(self.averge() < other.averge())
+
+    def __le__(self, other) -> bool:
+        return((self.averge() < other.averge()) or (list(self) == list(other)))
+
+    def __eq__(self, other) -> bool:
+        return(list(self) == list(other))
+
+    def __ne__(self, other) -> bool:
+        return(list(self) != list(other))
+
+    def __ge__(self, other) -> bool:
+        return((list(self) == list(other)) or (self.averge() > other.averge()))
+
+    def __gt__(self, other) -> bool:
+        return(self.averge() > other.averge())
+
+
+class DumbStats():
+    '10:KILL.LEVEL.LOOT.GOTO 10'
     def __init__(self, initMaxHP: int = 5, initMaxSP: int = 5,
                  ATT: int = None, DEF: int = None, SPE: int = None,
                  EAA: int = None, EDE: int = None, ACC: int = None,
@@ -38,9 +70,6 @@ class DumbStats():
         return({'MaxHP': self.MaxHP, 'HP': self.HP, 'MaxSP': self.MaxSP,
                 'SP': self.SP, 'ATT': self.ATT, 'DEF': self.DEF, 'SPE': self.SPE,
                 'EAA': self.EAA, 'EDE': self.EDE, 'ACC': self.ACC, 'EVA': self.EVA})
-
-    def __array__(self) -> np.array:
-        return(np.array(list(self)))
 
     def __add__(self, other) -> 'DumbStats':
         if(len(self) == len(other)):
@@ -114,9 +143,6 @@ class DumbStats():
         else:
             raise(NotImplementedError)
 
-    def __concat__(self) -> NotImplementedError:
-        raise(NotImplementedError('No?????'))
-
     def __neg__(self) -> 'DumbStats':
         return(DumbStats(asList=[-x for x in self]))
 
@@ -128,9 +154,6 @@ class DumbStats():
 
     def __len__(self) -> int:
         return(11)
-    
-    def __bool__(self) -> bool:
-        return(True)
 
     def __str__(self) -> str:
         return(
@@ -150,24 +173,3 @@ class DumbStats():
             'ACC\t'	+	str(self.ACC)	+ '\tHOW WELL YOU TRACK ENEMY MOVEMENTS.\n' +
             'EVA\t'	+	str(self.EVA)	+ '\tHOW FAST/WELL YOU REACT TO ENEMY MOVEMENTS.'
         )
-
-    def __repr__(self) -> str:
-        return(self.__str__())
-
-    def __lt__(self, other) -> bool:
-        return(self.averge() < other.averge())
-
-    def __le__(self, other) -> bool:
-        return((self.averge() < other.averge()) or (list(self) == list(other)))
-
-    def __eq__(self, other) -> bool:
-        return(list(self) == list(other))
-
-    def __ne__(self, other) -> bool:
-        return(list(self) != list(other))
-
-    def __ge__(self, other) -> bool:
-        return((list(self) == list(other)) or (self.averge() > other.averge()))
-
-    def __gt__(self, other) -> bool:
-        return(self.averge() > other.averge())

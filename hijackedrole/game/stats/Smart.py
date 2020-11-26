@@ -18,12 +18,6 @@ class CharStats():
     level           (levl): How much have you,\n
     seed            (seed): How.
     '''
-    def averge(self) -> int:
-        return int()
-
-    def median(self) -> int:
-        return median(list(self))
-
     def __init__(self, strg: int = 10, inte: int = 10, sped: int = 10, dext: int = 10,
                  wisd: int = 10, conn: int = 10, char: int = 10, luck: int = 50,
                  levl: int = 1, seed: int = None, asList: list = None) -> None:
@@ -52,9 +46,6 @@ class CharStats():
                                  self.char - other.char, self.luck - other.luck,
                                  self.levl - other.levl,
                                  min((self.seed - other.seed) * 2, 65536)]))
-
-    def __array__(self) -> np.array:
-        return(np.array(list(self)))
 
     def __mul__(self, other) -> 'CharStats':
         if(len(self) == len(other)):
@@ -126,23 +117,8 @@ class CharStats():
         else:
             raise(NotImplementedError)
 
-    def __concat__(self) -> NotImplementedError:
-        raise(NotImplementedError('No?????'))
-
-    def __neg__(self) -> 'CharStats':
-        return(CharStats(asList=[-x for x in self]))
-
-    def __inv__(self) -> 'CharStats':
-        return(CharStats(asList=[~x for x in self]))
-    
-    def __abs__(self) -> 'CharStats':
-        return(CharStats(asList=[abs(x) for x in self]))
-
     def __len__(self) -> int:
         return(10)
-    
-    def __bool__(self) -> bool:
-        return(True)
 
     def __list__(self) -> list:
         return([self.strg, self.inte, self.sped, self.dext, self.wisd,
@@ -168,24 +144,3 @@ class CharStats():
             '\n\tlevel:\t\t\t'	+	str(self.levl) +	' How much'				+
             '\n\tmagic number:\t' +	str(self.seed) + 	' How.'
         )
-
-    def __repr__(self) -> str:
-        return(self.__str__())
-    
-    def __lt__(self, other) -> bool:
-        return(self.averge() < other.averge())
-
-    def __le__(self, other) -> bool:
-        return((self.averge() < other.averge()) or (list(self) == list(other)))
-
-    def __eq__(self, other) -> bool:
-        return(list(self) == list(other))
-
-    def __ne__(self, other) -> bool:
-        return(list(self) != list(other))
-
-    def __ge__(self, other) -> bool:
-        return((list(self) == list(other)) or (self.averge() > other.averge()))
-
-    def __gt__(self, other) -> bool:
-        return(self.averge() > other.averge())
