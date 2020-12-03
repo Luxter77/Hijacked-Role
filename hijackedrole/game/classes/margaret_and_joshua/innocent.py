@@ -1,4 +1,4 @@
-from hijackedrole.game.stats.classes import GameClass
+from hijackedrole.game.classes import GameClass
 
 class InnocentFamily(GameClass):
     ...

@@ -18,9 +18,6 @@ import os
 import re
 
 from hijackedrole.config import getConfig, getCDB, getPDB
-from hijackedrole.game.classes import Barbarian, Bard, Cleric, Druid, Fighter, GameClass, Monk
-from hijackedrole.game.classes import Paladin, Ranger, Rogue, Sorcerer, Warlock, Wizard
-from hijackedrole.game.stuff import PlayerDB, Gamer, Campaing, CampaingDB, Character
 from hijackedrole.logger import LogMe
 
 # Why do I keep doing this to myself
@@ -90,22 +87,3 @@ async def on_ready():
 
 # HERE BE DRAGONS;
 # @bot.command(pass_context=True, brief='', description='')
-
-@bot.group(pass_context=True, brief='Role System Command',
-           description='Controls everything related roleplay mechanincs and meta')
-async def role(ctx: discord.ext.commands.Context):
-    if ctx.invoked_subcommand is None:
-        await ctx.send('No valid subcommand was provied')
-
-@role.group(pass_context=True, brief='Creates a new instance',
-            description='Creates a new instance of the given object')
-async def new(ctx: discord.ext.commands.Context):
-    if ctx.invoked_subcommand is None:
-        await ctx.send('No valid subpcommand was provided')
-
-@new.group(pass_context=True)
-async def character(ctx: discord.ext.commands.Context):
-    if (ctx.author in PDB.get_players()):
-        await ctx.send('')
-    else:
-        PDB.add_player(ctx.author)

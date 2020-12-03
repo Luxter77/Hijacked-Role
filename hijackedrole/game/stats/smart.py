@@ -2,7 +2,7 @@
 from __future__ import annotations
 import random
 
-from hijackedrole.game.stats.base import StatsBase
+from hijackedrole.game.stats import StatsBase
 
 class CharStats(StatsBase):
     '''
@@ -76,15 +76,14 @@ class CharStats(StatsBase):
 
     def __str__(self) -> str:
         return (
-            'Stats:'			+
-            '\n\tstr:\t\t\t'	+	str(self.strg) +	' How much you strong'	+
-            '\n\tint:\t\t\t'	+	str(self.inte) +	' How much you think'	+
-            '\n\tspd:\t\t\t'	+	str(self.sped) +	' How fast you move'	+
-            '\n\tdex:\t\t\t'	+	str(self.dext) +	' How well you move'	+
-            '\n\twis:\t\t\t'	+	str(self.wisd) +	' How well you think'	+
-            '\n\tcon:\t\t\t'	+	str(self.conn) +	' How well you'			+
-            '\n\tchr:\t\t\t'	+	str(self.char) +	' How you'				+
-            '\n\tluck:\t\t\t'	+	str(self.luck) +	' How well'				+
-            '\n\tlevel:\t\t\t'	+	str(self.levl) +	' How much'				+
-            '\n\tmagic number:\t' +	str(self.seed) + 	' How.'
+            f'\n\tstr:\t\t\t{str(self.strg)}\tHow much you strong' +
+            f'\n\tint:\t\t\t{str(self.inte)}\tHow much you think' +
+            f'\n\tspd:\t\t\t{str(self.sped)}\tHow fast you move' +
+            f'\n\tdex:\t\t\t{str(self.dext)}\tHow well you move' +
+            f'\n\twis:\t\t\t{str(self.wisd)}\tHow well you think' +
+            f'\n\tcon:\t\t\t{str(self.conn)}\tHow well you' +
+            f'\n\tchr:\t\t\t{str(self.char)}\tHow you' +
+            f'\n\tluk:\t\t\t{str(self.luck)}\tHow well' +
+            f'\n\tlvl:\t\t\t{str(self.levl)}\tHow much' +
+            f'\n\tMN°:\t\t\t{str(self.seed)}\tHow.'
         )

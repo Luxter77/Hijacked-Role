@@ -2,7 +2,7 @@
 from __future__ import annotations
 import random
 
-from hijackedrole.game.stats.base import StatsBase
+from hijackedrole.game.stats import StatsBase
 
 class DumbStats():
     '10:KILL.LEVEL.LOOT.GOTO 10'
@@ -71,18 +71,14 @@ class DumbStats():
         return(11)
 
     def __str__(self) -> str:
-        return('MPP\t'	+	str(self.MaxHP)	+ '\tHOW MUCH CAN YOU BE PUNCHED BEFORE YOU DIE.' +
-               ''      +   ''                 + '(IN GENERAL)\n' +
-               'HPP\t'	+	str(self.HP)	+ '\tHOW MUCH CAN YOU BE PUNCHED BEFORE YOU DIE.' +
-               ''      +   ''                 + '(NOW)\n' +
-               'MAP\t'	+	str(self.MaxHP)	+ '\tHOW MUCH CAN YOU PUNCH BEFORE YOU CAN\'T.' +
-               ''      +   ''                 + '(IN GENERAL)\n' +
-               'SPP\t'	+	str(self.HP)	+ '\tHOW MUCH CAN YOU PUNCH BEFORE YOU CAN\'T.' +
-               ''      +   ''                 + '(NOW)\n\n' +
-               'ATT\t'	+	str(self.ATT)	+ '\tHOW STRONG YOU ATTACK OTHER PEOPLE.\n' +
-               'DEF\t'	+	str(self.DEF)	+ '\tHOW MUCH YOU DEFEND WHEN ATTACKED.\n' +
-               'SPE\t'	+	str(self.SPE)	+ '\tHOW FAST YOU MOVE; WHAT DID YOU EXPECT?\n' +
-               'EAA\t'	+	str(self.EAA)	+ '\tHOW WELL YOU ATTACK OTHER PEOPLE.\n''' +
-               'EDE\t'	+	str(self.EDE)	+ '\tHOW WELL YOU DEFFEND FROM OTHER PEOPLE.\n' +
-               'ACC\t'	+	str(self.ACC)	+ '\tHOW WELL YOU TRACK ENEMY MOVEMENTS.\n' +
-               'EVA\t'	+	str(self.EVA)	+ '\tHOW FAST/WELL YOU REACT TO ENEMY MOVEMENTS.')
+        return(f'MPP:\t{str(self.MaxHP)}\tHOW MUCH CAN YOU BE PUNCHED BEFORE YOU DIE. (IN GENERAL)\n' +
+               f'HPP:\t{str(self.HP)}\tHOW MUCH CAN YOU BE PUNCHED BEFORE YOU DIE. (NOW)\n' +
+               f'MAP:\t{str(self.MaxHP)}\tHOW MUCH CAN YOU PUNCH BEFORE YOU CAN\'T. (IN GENERAL)\n' +
+               f'SPP:\t{str(self.HP)}\tHOW MUCH CAN YOU PUNCH BEFORE YOU CAN\'T. (NOW)\n' +
+               f'ATT:\t{str(self.ATT)}\tHOW STRONG YOU ATTACK OTHER PEOPLE.\n' +
+               f'DEF:\t{str(self.DEF)}\tHOW MUCH YOU DEFEND WHEN ATTACKED.\n' +
+               f'SPE:\t{str(self.SPE)}\tHOW FAST YOU MOVE; WHAT DID YOU EXPECT?\n' +
+               f'EAA:\t{str(self.EAA)}\tHOW WELL YOU ATTACK OTHER PEOPLE.\n''' +
+               f'EDE:\t{str(self.EDE)}\tHOW WELL YOU DEFFEND FROM OTHER PEOPLE.\n' +
+               f'ACC:\t{str(self.ACC)}\tHOW WELL YOU TRACK ENEMY MOVEMENTS.\n' +
+               f'EVA:\t{str(self.EVA)}\tHOW FAST/WELL YOU REACT TO ENEMY MOVEMENTS.')
